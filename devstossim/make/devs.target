@@ -1,0 +1,64 @@
+# Ricardo Guido Marelli - devs.target
+# Derived from TinyOS null.target
+
+PLATFORM = devs
+PFLAGS += -finline-limit=100000 
+
+$(call TOSMake_include_platform,devs)
+
+GCC=gcc
+GPP=g++
+OPTFLAGS = -g -O0
+LIBS = -lm -lstdc++ 
+PFLAGS += -fnesc-nido-tosnodes=1000 -fnesc-simulate -fnesc-nido-motenumber=sim_node\(\)  
+WFLAGS = -Wno-nesc-data-race
+PYTHON_VERSION=2.5
+
+DEVSTOSSIMDIR=$(DEVSBASE)/devstossim
+
+DEVSTARGET = simbuild/mote
+BUILDDIR   = simbuild/$(PLATFORM)
+OBJFILE    = $(BUILDDIR)/sim.o
+DEVSDIR     =$(DEVSBASE)/devsforcpp
+XML        = app.xml
+DUMPTYPES = -fnesc-dump=components -fnesc-dump=variables -fnesc-dump=constants -fnesc-dump=typedefs -fnesc-dump=interfacedefs -fnesc-dump=tags
+
+PLATFORM_LIB_FLAGS = -lstdc++ -lpthread -lrt
+
+BUILD_DEPS = sim-exe
+
+DEVS_PRG_OBJ ?= mote.o
+DEVS_PRG_DIR ?= $(DEVSTOSSIMDIR)/client_mote
+
+DEVS_FILES = $(DEVS_PRG_OBJ) Interface.o MoteManager.o TinyOSProcessor.o
+DEVS_OUT_OBJ=$(addprefix $(BUILDDIR)/,$(DEVS_FILES))
+
+CFLAGS += -I$(DEVSTOSSIMDIR)/platforms/devs/ 
+
+%.cpp: %.h
+	@echo "$@ --> $?"
+
+%.o: $(DEVSTOSSIMDIR)/interface/%.cpp
+	$(GPP) -c $(PLATFORM_CC_FLAGS) $(PLATFORM_FLAGS) -o $(BUILDDIR)/$@ $(OPTFLAGS) $(CFLAGS) $? -I$(DEVSDIR) -I$(DEVSTOSSIMDIR)
+
+%.o: $(DEVS_PRG_DIR)/%.cpp
+	$(GPP) -c $(PLATFORM_CC_FLAGS) $(PLATFORM_FLAGS) -o $(BUILDDIR)/$@ $(OPTFLAGS) $(CFLAGS) $? -I$(DEVSDIR) -I$(DEVSTOSSIMDIR) -I$(DEVSTOSSIMDIR)/interface/
+
+%.o: $(DEVSTOSSIMDIR)/platforms/devs/%.c
+	$(GPP) -c $(PLATFORM_CC_FLAGS) $(PLATFORM_FLAGS) -o $(BUILDDIR)/$@ $(OPTFLAGS) $(CFLAGS) $? -I$(DEVSDIR) -I$(DEVSTOSSIMDIR) -I$(DEVSTOSSIMDIR)/interface/ -I$(TOSDIR)/types -I$(TOSDIR)/lib/serial
+
+sim-exe: builddir $(DEVS_FILES) $(BUILD_EXTRA_DEPS) FORCE
+	@echo "  placing object files in $(BUILDDIR)"
+	@echo "  writing XML schema to $(XML)"
+	@echo "  compiling $(COMPONENT) to object file sim.o"
+	$(NCC) -v -c $(PLATFORM_FLAGS) -o $(OBJFILE) $(OPTFLAGS) $(PFLAGS) $(CFLAGS) $(WFLAGS) $(COMPONENT).nc $(LDFLAGS)  $(DUMPTYPES) -fnesc-dumpfile=$(XML) -I$(DEVSTOSSIMDIR)/platforms/devs
+
+	$(GPP) $(PLATFORM_BUILD_FLAGS) $(PLATFORM_CC_FLAGS) $(OBJFILE) $(DEVS_OUT_OBJ) $(PLATFORM_LIB_FLAGS) -o $(DEVSTARGET)
+
+	@echo " "
+	@echo "*** Successfully built DEVS-TOSSIM (DEVS TinyOS Simulator). "
+
+
+devs: $(BUILD_DEPS)
+	@:
+
