@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # DEVS-TOSSIM base directory
-DEVSBASE=/opt/devs
+DEVSBASE=/opt/devs/src
 
 # Import TinyOS environment variables
 # The script should export the following environment variables:
