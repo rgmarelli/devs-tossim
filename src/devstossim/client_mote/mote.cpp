@@ -59,9 +59,9 @@ Args parse_args( int argc, char *argv[] ) {
     args.mote_name = argv[2];
     args.mote_id = atol(argv[3]);
 
-    args.duty_cycle = atof(argv[4]);
+    if( argc > 4 ) {
+	args.duty_cycle = atof(argv[4]);
 
-    if( argc > 5 ) {
         std::istringstream ss(argv[5]);
         std::string val;
 
