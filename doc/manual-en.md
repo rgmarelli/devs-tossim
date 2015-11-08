@@ -24,21 +24,21 @@ is generic and can be used independently of the models of WSN motes.
 The directory devstossim contains all the models for simulating wireless sensor networks
 and basic client and server applications. This directory has the following subdirectories:
 
-* client_mote: it's a basic client application that is compiled with TinyOS applications.
+* __client_mote__: it's a basic client application that is compiled with TinyOS applications.
 
-* interface: it contains the interface of the simulator with TinyOS and the implementation
+* __interface__: it contains the interface of the simulator with TinyOS and the implementation
              of the model TinyOSProcessor.
 
-* make: it contains the Makefiles that allow the integration of the simulation framework
+* __make__: it contains the Makefiles that allow the integration of the simulation framework
             with the TinyOS build system. This makes possible to compile TinyOS application
             for the simulator.
     
-* model: it contains the implementation of the DEVS models. These classes model a WSN 
+* __model__: it contains the implementation of the DEVS models. These classes model a WSN 
              mote and can be extended to incorporate additional behavior.
  
-* platforms: this directory contains the TinyOS counterpart of the simulation framework.
+* __platforms__: this directory contains the TinyOS counterpart of the simulation framework.
 
-* server: is a basic server program that executes the RadioMedium coupled model in the 
+* __server__: is a basic server program that executes the RadioMedium coupled model in the 
               user interface of DEVS-TOSSIM. Client motes (TinyOS applications) connect to
               this server.
 
@@ -86,21 +86,21 @@ simulator (the higher level simulator in the hierarchy).
 
 The interface provides the following commands:
 
-* dump: dump the event queue to the log.
+* __dump__: dump the event queue to the log.
 
-* help: this help.
+* __help__: this help.
 
-* info: show some basic simulation information.
+* __info__: show some basic simulation information.
 
-* loop: start an infinite simulation loop.
+* __loop__: start an infinite simulation loop.
     
-* step [N]: run N simulation steps.
+* __step [N]__: run N simulation steps.
 
-* stop: stop the simulation.
+* __stop__: stop the simulation.
 
-* time [T]: expand or contract time by factor T. 0 = run as fast as possible.
+* __time [T]__: expand or contract time by factor T. 0 = run as fast as possible.
 
-* quit: exit the simulation.
+* __quit__: exit the simulation.
 
 
 The simulation uses the syslog's facility "USER" to log information. All logs are preceded
@@ -120,25 +120,25 @@ Then, the TinyOS application (that was compiled with the devs platform) must be 
 Every instance of this program represents an independent sensor node. The program receives
 the following arguments:
 
-* server: the name of the host and port in which the server is running. 
+* __server__: the name of the host and port in which the server is running. 
               For example: localhost:5001.
 
-* name: name of the sensor node.
+* __name__: name of the sensor node.
 
-* id: id of the sensor node in TinyOS.
+* __id__: id of the sensor node in TinyOS.
 
-* duty-cycle (optional): duty-cycle that the transceiver will use as a number between
-                         0 and 1. Default, is 1 (the transceiver is won't be suspended).
+* __duty-cycle (optional)__: duty-cycle that the transceiver will use as a number between
+                             0 and 1. Default, is 1 (the transceiver is won't be suspended).
 
-* x,y,z (optional): position of the node in the space.
+* __x,y,z (optional)__: position of the node in the space.
 
-* serial port (optional): activate a serial forwarder in this port.
+* __serial port (optional)__: activate a serial forwarder in this port.
 
-* sensor value (optional): if a value is specified, the sensor's value will oscillate 
-                           around this value; if not, the sensor value is random.
+* __sensor value (optional)__: if a value is specified, the sensor's value will oscillate 
+                               around this value; if not, the sensor value is random.
 
-* data sensor port (optional): activate a DataSensor that will expect information in the 
-                               port specified.
+* __data sensor port (optional)__: activate a DataSensor that will expect information in the 
+                                   port specified.
 
 Additionally, a bash script called "nodes.sh" (src/devstossim/client_mote) can be used to 
 generate a grid of nodes.
@@ -162,16 +162,16 @@ To create a new DEVS atomic model you must inherit from the abstract class: Atom
 This class defines the following three abstract methods that must be implemented on derived
 classes:
 
-  virtual void internalTransition()
+##### virtual void internalTransition()
 
     DEVS internal transition.
 
-  virtual void externalTransition(DEVS::ExternalMessage* message)
+##### virtual void externalTransition(DEVS::ExternalMessage* message)
 
     DEVS external transition. It receives the external message as a parameter.
     The memory allocated for this pointer is automatically released by the framework.
 
-  virtual DEVS::OutputMessage* outputFunction()
+##### virtual DEVS::OutputMessage* outputFunction()
 
     This function is called to generate an output message that depends on the state of the 
     model. To return an output message, you must allocate memory that will be released by 
@@ -182,7 +182,7 @@ classes:
 On the other hand, the state's duration function has a default implementation that returns the
 value of the state variable "sigma".
 
-  virtual TIME timeAdvanceFunction()
+##### virtual TIME timeAdvanceFunction()
 
     The state variable "sigma" can be assigned invoking the method setSigma(). 
 
@@ -194,20 +194,20 @@ value of the state variable "sigma".
 
 To control the phases or states of models, the following methods are provided:
 
-  void registerPhase(std::string phase)
+##### void registerPhase(std::string phase)
 
     This method registers a new phase. All phases of a model must be registered in its 
     constructor.
 
-  std::string phase()
+##### std::string phase()
 
     Returns the current phase of the model.
 
-  setPhase(std::string phase)
+##### setPhase(std::string phase)
 
     It's used to change the phase of a model.
 
-  bool phaseIs(std::string phase)
+##### bool phaseIs(std::string phase)
 
     It's used to check if a model is in a specific phase.
 
@@ -215,11 +215,11 @@ To control the phases or states of models, the following methods are provided:
 Finally, when constructing an atomic model, you must register its input and output ports.
 Ports are accessible with the methods inputPorts() and outputPorts(). For example:
 
-  this->outputPorts().add( DEVS::Port( this-> name(),
+    this->outputPorts().add( DEVS::Port( this-> name(),
                                        "TimerFire") );
-
-  this->inputPorts().add( DEVS::Port(this->name(),
-                          "TimerStart"));
+                                       
+    this->inputPorts().add( DEVS::Port(this->name(),
+                                       "TimerStart"));
 
 
 ---------------------------------------
@@ -230,12 +230,12 @@ The class CoupledModel is used to generate new coupled models. This class can be
 or derived to define the coupled model in the constructor or to overload the output 
 translation function. The definition of a coupled model implies:
   
-* Registering input and output ports.
+* __Registering input and output ports.__
 
       This is done just as for the atomic models.
 
 
-* Registering the models that compound the coupled model.
+* __Registering the models that compound the coupled model.__
 
       Child models can be atomic models or other coupled models. These models are registered
       using the model's name which implies that names must be unique in the context of a 
@@ -246,7 +246,7 @@ translation function. The definition of a coupled model implies:
         coupled.add( "model2" );
 
 
-* Registering couplings. 
+* __Registering couplings.__
 
       Couplings can be established between ports of the child models or with the ports
       of the coupled model. One port can be coupled to multiple ports.
@@ -261,7 +261,7 @@ translation function. The definition of a coupled model implies:
                              coupled.outputPorts().getPortByName("Out") );
 
 
-* Determining if a specific output translation function is required. 
+* __Determining if a specific output translation function is required.__
 
       The frameworks provides a generic output translation function that can be overloaded
       to implement model specific behavior:
@@ -281,48 +281,47 @@ To run a simulation you must instantiate the corresponding simulators. Every DEV
 model must be associated to a simulator that will be in charge of executing that model.
 For example:
 
-  SimpleAtomic atomic_model1( "model1" );
-  SimpleAtomic atomic_model2( "model2" );
-  DEVS::CoupledModel coupled( "aCoupledModel" );
+    SimpleAtomic atomic_model1( "model1" );
+    SimpleAtomic atomic_model2( "model2" );
+    DEVS::CoupledModel coupled( "aCoupledModel" );
 
-  DEVS::AtomicSimulator simulator1( &atomic_model1);
-  DEVS::AtomicSimulator simulator2( &atomic_model2);
-  DEVS::CoupledSimulator coupled_simulator( &coupled );
+    DEVS::AtomicSimulator simulator1( &atomic_model1);
+    DEVS::AtomicSimulator simulator2( &atomic_model2);
+    DEVS::CoupledSimulator coupled_simulator( &coupled );
 
-    The preceding source code will instantiate two atomic models, a coupled model, and 
-    their simulators.
+The preceding source code will instantiate two atomic models, a coupled model, and 
+their simulators.
 
-  coupled_simulator.addSimulator( &simulator1 );
-  coupled_simulator.addSimulator( &simulator2 );
+   coupled_simulator.addSimulator( &simulator1 );
+   coupled_simulator.addSimulator( &simulator2 );
 
-    Simulators of the child models (model1, model2) must be registered with the 
-    simulator of the coupled model (aCoupledModel).
+Simulators of the child models (model1, model2) must be registered with the 
+simulator of the coupled model (aCoupledModel).
+ 
+   for( int i=0; i < 20; i++ ) {
+       coupled_simulator.simulate();
+   }
 
-  for( int i=0; i < 20; i++ ) {
-      coupled_simulator.simulate();
-  }
-
-    Once all simulators are registered, you can run 20 simulation steps.
+Once all simulators are registered, you can run 20 simulation steps.
 
 
 Alternatively, the classes CoupledCompositeModel and CoupledCompositeSimulator can be used
 to generate an hierarchy of simulators:
 
-  DEVS::CoupledCompositeModel coupled( "aCoupledModel" );
+   DEVS::CoupledCompositeModel coupled( "aCoupledModel" );
+   
+    SimpleModel* model1 = new SimpleModel( "model1" );
+    SimpleModel* model2 = new SimpleModel( "model2" );
+    
+    coupled.add( model1 );
+    coupled.add( model2 );
 
-  SimpleModel* model1 = new SimpleModel( "model1" );
-  SimpleModel* model2 = new SimpleModel( "model2" );
+Note that when using CoupledCompositeModel, the child model instances are directly registered 
+with the coupled model.
 
-  coupled.add( model1 );
-  coupled.add( model2 );
+   DEVS::CoupledCompositeSimulator coupled_simulator(&coupled);
 
-    Note that when using CoupledCompositeModel, the child model instances are directly 
-    registered with the coupled model.
-
-
-  DEVS::CoupledCompositeSimulator coupled_simulator(&coupled);
-
-    On instantiation, CoupledCompositeSimulator will instantiate all the simulators for the
-    child models.
+On instantiation, CoupledCompositeSimulator will instantiate all the simulators for the
+child models.
 
 ---------------------------------------
