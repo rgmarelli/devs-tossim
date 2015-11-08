@@ -60,7 +60,7 @@ Para compilar aplicaciones TinyOS en DEVS-TOSSIM es necesario exportar las varia
 entorno DEVSBASE y TOSMAKE_PATH. Suponiendo que se haya instalado el simulador en el 
 directorio /opt/devs se debe ejecutar:
 
-    export DEVSBASE=/opt/devs
+    export DEVSBASE=/opt/devs/src
     export TOSMAKE_PATH=$DEVSBASE/devstossim/make/
 
 DEVS-TOSSIM agrega una plataforma "devs" a TinyOS. Para compilar una aplicación contra el 
