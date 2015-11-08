@@ -163,8 +163,8 @@ On the other hand, the state's duration function has a default implementation th
 
     The method *timeAdvanceFunction()* can be overloaded to provide a different implementation.
 
-    The class TIME represents time in DEVS and allows passivating a model with the constant: DEVS::TIME::infinity(). 
-    It has nanosecond precision.
+    The class TIME represents time in DEVS and allows passivating a model with the constant: 
+    DEVS::TIME::infinity(). It has nanosecond precision.
 
 
 To control the phases or states of models, the following methods are provided:
