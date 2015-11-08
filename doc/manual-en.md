@@ -53,7 +53,7 @@ been generated and the following message is shown:
 
 ---------------------------------------
 
-### 1.3. Compiling de simulation server
+### 1.3. Compiling the simulation server
 
 The server program executes the *RadioMedium* coupled model and the DEVS user interface.
 To compile the program, you must execute:
