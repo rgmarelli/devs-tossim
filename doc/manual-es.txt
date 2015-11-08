@@ -385,7 +385,7 @@ modelo acoplado implica  los siguientes cuatro puntos:
 
         virtual ExternalMessage* translate( OutputMessage *message, Port &dstPort )
 
-          Este método se invoca una vez por cada puerto dstPort que esté acoplado al0
+          Este método se invoca una vez por cada puerto dstPort que esté acoplado al
           puerto de salida especificado en el mensaje. Se permite que la función devuelva 
           NULL lo que indica que para ese puerto se está suprimiendo la salida. Para 
           devolver un mensaje, se debe alocar memoria que será liberada automáticamente 
