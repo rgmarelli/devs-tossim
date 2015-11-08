@@ -1,15 +1,14 @@
-DEVS-TOSSIM
+# DEVS-TOSSIM
 
 Copyright (c) 2015 Ricardo Guido Marelli
 All rights reserved.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-1. User guide
+## 1. User guide
 
-------------------------------------------------------------------------------------------
 
-1.1. Installation and directory structure
+### 1.1. Installation and directory structure
 
 The simulation framework DEVS-TOSSIM was developed and tested with TinyOS 2.1.2 and Linux.
 The DEVS user interface requires the readline library and its development files (headers).
@@ -25,28 +24,27 @@ is generic and can be used independently of the models of WSN motes.
 The directory devstossim contains all the models for simulating wireless sensor networks
 and basic client and server applications. This directory has the following subdirectories:
 
-    * client_mote: it's a basic client application that is compiled with TinyOS 
-                  applications.
+* client_mote: it's a basic client application that is compiled with TinyOS applications.
 
-    * interface: it contains the interface of the simulator with TinyOS and the 
-                 implementation of the model TinyOSProcessor.
+* interface: it contains the interface of the simulator with TinyOS and the implementation
+             of the model TinyOSProcessor.
 
-    * make: it contains the Makefiles that allow the integration of the simulation framework
+* make: it contains the Makefiles that allow the integration of the simulation framework
             with the TinyOS build system. This makes possible to compile TinyOS application
             for the simulator.
     
-    * model: it contains the implementation of the DEVS models. These classes model a WSN 
+* model: it contains the implementation of the DEVS models. These classes model a WSN 
              mote and can be extended to incorporate additional behavior.
  
-    * platforms: this directory contains the TinyOS counterpart of the simulation framework.
+* platforms: this directory contains the TinyOS counterpart of the simulation framework.
 
-    * server: is a basic server program that executes the RadioMedium coupled model in the 
+* server: is a basic server program that executes the RadioMedium coupled model in the 
               user interface of DEVS-TOSSIM. Client motes (TinyOS applications) connect to
               this server.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-1.2. Compiling TinyOS applications with DEVS-TOSSIM
+### 1.2. Compiling TinyOS applications with DEVS-TOSSIM
 
 To compile TinyOS applications with DEVS-TOSSIM is necessary to export the environment
 variables: DEVSBASE and TOSMAKE_PATH. Assuming that DEVS-TOSSIM source code is in the 
@@ -67,11 +65,9 @@ been generated and the following message is shown:
 
     *** Successfully built DEVS-TOSSIM (DEVS TinyOS Simulator).
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-1.3. Compiling de simulation server
-
-------------------------------------------------------------------------------------------
+### 1.3. Compiling de simulation server
 
 The server program executes the RadioMedium coupled model and the DEVS user interface.
 To compile the program, you must execute:
@@ -81,38 +77,38 @@ To compile the program, you must execute:
 
 This commands will generate a binary called "server".
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-1.4. The user interface of DEVS-TOSSIM
+### 1.4. The user interface of DEVS-TOSSIM
 
 The DEVS framework includes a basic user interface that is compiled with the root DEVS 
 simulator (the higher level simulator in the hierarchy).
 
 The interface provides the following commands:
 
-    * dump: dump the event queue to the log.
+* dump: dump the event queue to the log.
 
-    * help: this help.
+* help: this help.
 
-    * info: show some basic simulation information.
+* info: show some basic simulation information.
 
-    * loop: start an infinite simulation loop.
+* loop: start an infinite simulation loop.
     
-    * step [N]: run N simulation steps.
+* step [N]: run N simulation steps.
 
-    * stop: stop the simulation.
+* stop: stop the simulation.
 
-    * time [T]: expand or contract time by factor T. 0 = run as fast as possible.
+* time [T]: expand or contract time by factor T. 0 = run as fast as possible.
 
-    * quit: exit the simulation.
+* quit: exit the simulation.
 
 
 The simulation uses the syslog's facility "USER" to log information. All logs are preceded
 with the tag "DEVSTOSSIM" and the PID of the originating process.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-1.5. Running a simulation with DEVS-TOSSIM
+### 1.5. Running a simulation with DEVS-TOSSIM
 
 To run a simulation with DEVS-TOSSIM, the server program must be executed as follows
 (the argument specifies the TCP port in which the server listens):
@@ -124,44 +120,43 @@ Then, the TinyOS application (that was compiled with the devs platform) must be 
 Every instance of this program represents an independent sensor node. The program receives
 the following arguments:
 
-    * server: the name of the host and port in which the server is running. 
+* server: the name of the host and port in which the server is running. 
               For example: localhost:5001.
 
-    * name: name of the sensor node.
+* name: name of the sensor node.
 
-    * id: id of the sensor node in TinyOS.
+* id: id of the sensor node in TinyOS.
 
-    * duty-cycle (optional): duty-cycle that the transceiver will use as a number between
-                             0 and 1. Default, is 1 (the transceiver is won't be suspended).
+* duty-cycle (optional): duty-cycle that the transceiver will use as a number between
+                         0 and 1. Default, is 1 (the transceiver is won't be suspended).
 
-    * x,y,z (optional): position of the node in the space.
+* x,y,z (optional): position of the node in the space.
 
-    * serial port (optional): activate a serial forwarder in this port.
+* serial port (optional): activate a serial forwarder in this port.
 
-    * sensor value (optional): if a value is specified, the sensor's value will oscillate 
-                               around this value; if not, the sensor value is random.
+* sensor value (optional): if a value is specified, the sensor's value will oscillate 
+                           around this value; if not, the sensor value is random.
 
-    * data sensor port (optional): activate a DataSensor that will expect information in the 
-                                   port specified.
+* data sensor port (optional): activate a DataSensor that will expect information in the 
+                               port specified.
 
 Additionally, a bash script called "nodes.sh" (src/devstossim/client_mote) can be used to 
 generate a grid of nodes.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-2. Development guide
+## 2. Development guide
 
-------------------------------------------------------------------------------------------
 
-2.1. Introduction
+### 2.1. Introduction
 
 This guide explains how to use the DEVS framework and generate new DEVS models. The DEVS 
 framework is generic and can be used to create simulations that have no relation with
 wireless sensor networks.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-2.2. Creating new DEVS atomic models
+### 2.2. Creating new DEVS atomic models
 
 To create a new DEVS atomic model you must inherit from the abstract class: AtomicModel.
 This class defines the following three abstract methods that must be implemented on derived
@@ -227,20 +222,20 @@ Ports are accessible with the methods inputPorts() and outputPorts(). For exampl
                           "TimerStart"));
 
 
-------------------------------------------------------------------------------------------
+---------------------------------------
  
-2.3. Creating new DEVS coupled models
+### 2.3. Creating new DEVS coupled models
 
 The class CoupledModel is used to generate new coupled models. This class can be used directly
 or derived to define the coupled model in the constructor or to overload the output 
 translation function. The definition of a coupled model implies:
   
-    * Registering input and output ports.
+* Registering input and output ports.
 
       This is done just as for the atomic models.
 
 
-    * Registering the models that compound the coupled model.
+* Registering the models that compound the coupled model.
 
       Child models can be atomic models or other coupled models. These models are registered
       using the model's name which implies that names must be unique in the context of a 
@@ -251,7 +246,7 @@ translation function. The definition of a coupled model implies:
         coupled.add( "model2" );
 
 
-    * Registering couplings. 
+* Registering couplings. 
 
       Couplings can be established between ports of the child models or with the ports
       of the coupled model. One port can be coupled to multiple ports.
@@ -266,7 +261,7 @@ translation function. The definition of a coupled model implies:
                              coupled.outputPorts().getPortByName("Out") );
 
 
-    * Determining if a specific output translation function is required. 
+* Determining if a specific output translation function is required. 
 
       The frameworks provides a generic output translation function that can be overloaded
       to implement model specific behavior:
@@ -278,9 +273,9 @@ translation function. The definition of a coupled model implies:
           port. When returning a message, memory must be allocated; this memory is released
           automatically by the framework.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
 
-2.4. Instantiation of simulators
+### 2.4. Instantiation of simulators
 
 To run a simulation you must instantiate the corresponding simulators. Every DEVS 
 model must be associated to a simulator that will be in charge of executing that model.
@@ -330,4 +325,4 @@ to generate an hierarchy of simulators:
     On instantiation, CoupledCompositeSimulator will instantiate all the simulators for the
     child models.
 
-------------------------------------------------------------------------------------------
+---------------------------------------
