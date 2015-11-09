@@ -7,7 +7,6 @@ All rights reserved.
 
 ## 1. Manual de usuario
 
-------------------------------------------------------------------------------------------
 
 ### 1.1. Estructura de directorios e instalación
 
@@ -65,8 +64,6 @@ cliente mote y se lee el siguiente mensaje:
 ------------------------------------------------------------------------------------------
 
 ### 1.3. Compilación del servidor
-
-------------------------------------------------------------------------------------------
 
 El programa servidor de ejemplo ejecuta el modelo acoplado *RadioMedium* en la interfaz de 
 usuario de DEVS. Este programa es necesario recompilarlo solamente en caso de realizar 
@@ -207,27 +204,27 @@ El framework DEVS es genérico y puede utilizarse para realizar otros simuladore
 tengan relación con redes de sensores inalámbricas.
 
 Entre los modelos DEVS generados para implementar DEVS-TOSSIM hay modelos relativamente 
-simples, como ser la clase Timer, que se pueden tomar como referencia.
+simples, como ser la clase *Timer*, que se pueden tomar como referencia.
 
 ------------------------------------------------------------------------------------------
 
 ### 2.2. Creación de nuevos modelos atómicos DEVS
 
 Para generar un nuevo modelo atómico DEVS se debe heredar de la clase abstracta 
-AtomicModel. Esta clase define los siguientes tres métodos abstractos para los cuales 
+*AtomicModel*. Esta clase define los siguientes tres métodos abstractos para los cuales 
 debe proveerse una implementación:
 
 
-  virtual void internalTransition()
+##### virtual void internalTransition()
 
     Función de transición interna.
 
-  virtual void externalTransition(DEVS::ExternalMessage* message)
+##### virtual void externalTransition(DEVS::ExternalMessage* message)
 
     Función de transición externa. Recibe como parámetro el mensaje externo. Este puntero 
     no se debe liberar ya que la memoria es liberada automáticamente por el framework.
 
-  virtual DEVS::OutputMessage* outputFunction()
+##### virtual DEVS::OutputMessage* outputFunction()
 
     Función de salida. Esta función se invoca para generar el mensaje de salida que 
     depende del estado del modelo. Para devolver un mensaje de salida, se debe alocar 
@@ -236,58 +233,54 @@ debe proveerse una implementación:
     devolver NULL.
 
 
-Por otro lado, la función de duración de estado tiene una implementación por defecto que 
-devuelve el valor de la variable de estado sigma como se detalla a continuación:
+Por otro lado, la función de duración de estado tiene una implementación por defecto que devuelve el valor de la variable de estado sigma como se detalla a continuación:
 
+##### virtual TIME timeAdvanceFunction()
 
-  virtual TIME timeAdvanceFunction()
-
-    La variable de estado sigma se puede asignar invocando el método setSigma() en el 
-    método que corresponda (por ejemplo, en internalTransition). 
-
-    El método timeAdvanceFunction() se puede sobrecargar en las clases derivadas con el 
+    La variable de estado sigma se puede asignar invocando el método *setSigma()* en el 
+    método que corresponda (por ejemplo, en internalTransition).
+     
+    El método *timeAdvanceFunction()* se puede sobrecargar en las clases derivadas con el 
     fin de proveer una implementación diferente.
-
-    La clase TIME representa el tiempo en DEVS y admite la asignación de un valor infinito
-    para pasivar el modelo: DEVS::TIME::infinity(). Tiene precisión de nanosegundos.
+     
+     La clase *TIME* representa el tiempo en DEVS y admite la asignación de un valor infinito
+    para pasivar el modelo: *DEVS::TIME::infinity()*. Tiene precisión de nanosegundos.
 
 
 Respecto al control de las fases o estados en los que puede estar el modelo se proveen los siguientes métodos:
 
-  void registerPhase(std::string phase)
+##### void registerPhase(std::string phase)
 
     Esté método registra una fase. Todas las fases o estados que el modelo puede tomar 
     deben registrarse en el constructor.
 
-  std::string phase()
+##### std::string phase()
 
     Devuelve la fase actual.
 
-  setPhase(std::string phase)
+##### setPhase(std::string phase)
 
     Se utiliza para cambiar la fase del modelo durante una transición externa, durante una
     transición interna, o en construcción para asignar la fase inicial. El método valida
     que la fase que se está intentando asignar haya sido registrada previamente.
 
-  bool phaseIs(std::string phase)
+##### bool phaseIs(std::string phase)
 
     Permite validar si el modelo se encuentra en la fase especificada.
 
 
-Finalmente, al construir un modelo atómico se deben registrar los puertos de los que 
-dispone ese modelo. Los puertos de entrada y salida del modelo son accesibles mediante los 
-métodos outputPorts() e inputPorts(). Por ejemplo:
+Finalmente, al construir un modelo atómico se deben registrar los puertos de los que dispone ese modelo. Los puertos de entrada y salida del modelo son accesibles mediante los métodos *outputPorts()* e *inputPorts()*. Por ejemplo:
 
-  this->outputPorts().add( DEVS::Port( this-> name(),
-                                       "TimerFire") );
-
-    Agrega al modelo un puerto de salida llamado TimerFire. Notar que el puerto se 
-    construye especificando el nombre del modelo atómico.
-
-  this->inputPorts().add( DEVS::Port(this->name(),
+    this->outputPorts().add( DEVS::Port( this-> name(),
+                                         "TimerFire") );
+                                         
+     Agrega al modelo un puerto de salida llamado TimerFire. Notar que el puerto se 
+     construye especificando el nombre del modelo atómico.
+     
+    this->inputPorts().add( DEVS::Port(this->name(),
                           "TimerStart"));
-
-    Agrega al modelo un puerto de entrada llamado TimerStart.
+                          
+     Agrega al modelo un puerto de entrada llamado TimerStart.
 
 ------------------------------------------------------------------------------------------
  
@@ -298,12 +291,11 @@ instanciarse directamente o derivarse para definir el modelo acoplado en el cons
 si se requiere sobrecargar la función de traducción de la salida. La definición de un 
 modelo acoplado implica  los siguientes cuatro puntos:
 
-    * Registrar los puertos de entrada y salida del modelo acoplado.
+* __Registrar los puertos de entrada y salida del modelo acoplado__.
 
-      Esto se realiza del mismo modo que para los modelos atómicos.
+     Esto se realiza del mismo modo que para los modelos atómicos.
 
-
-    * Registrar los modelos que componen el modelo acoplado. 
+* __Registrar los modelos que componen el modelo acoplado__.
 
       Los modelos componentes pueden ser modelos atómicos o modelos acoplados. Como puede 
       verse en el ejemplo siguiente, los modelos componente se registran utilizando el 
@@ -314,8 +306,7 @@ modelo acoplado implica  los siguientes cuatro puntos:
         coupled.add( "modelo1" );
         coupled.add( "modelo2" );
 
-
-    * Registrar los acoplamientos. 
+* __Registrar los acoplamientos__.
 
       Se pueden establecer acoplamientos entre los modelos componentes o acoplar los 
       puertos del modelo acoplado a los modelos componentes. Un mismo puerto puede 
@@ -342,7 +333,7 @@ modelo acoplado implica  los siguientes cuatro puntos:
           modelo acoplado.
 
 
-    * Determinar si se necesita una función de traducción de la salida especifica. 
+* __Determinar si se necesita una función de traducción de la salida especifica__.
 
       Por defecto, el framework provee una función de traducción de la salida genérica. 
       No obstante, puede requerirse realizar una función específica para el modelo 
