@@ -1,71 +1,58 @@
-DEVS-TOSSIM
+# DEVS-TOSSIM
 
 Copyright (c) 2013-2014 Ricardo Guido Marelli
 All rights reserved.
 
 ------------------------------------------------------------------------------------------
 
-1. Manual de usuario
+## 1. Manual de usuario
 
 ------------------------------------------------------------------------------------------
 
-1.1. Estructura de directorios e instalación
+### 1.1. Estructura de directorios e instalación
 
-El framework de simulación DEVS-TOSSIM fue desarrollado y probado con TinyOS 2.1.2 bajo 
+El framework de simulación __DEVS-TOSSIM__ fue desarrollado y probado con TinyOS 2.1.2 bajo 
 plataforma Linux. Para poder compilar la interfaz de usuario de DEVS es necesario instalar 
-la biblioteca readline junto a sus archivos para desarrollo (headers). 
+la biblioteca *readline* junto a sus archivos para desarrollo (headers). 
 
 La instalación del framework consiste en la copia del código fuente a algún directorio del 
 usuario. No se requiere realizar pasos adicionales. 
 
-El framework se compone de dos directorios principales: devsforcpp y devstossim.
+El framework se compone de dos directorios principales: *devsforcpp* y *devstossim*.
 
-El directorio devsforcpp contiene la implementación de DEVS. Esta es una implementación 
+El directorio *devsforcpp* contiene la implementación de DEVS. Esta es una implementación 
 genérica que se puede utilizar en forma independiente de los modelos para motes 
 desarrollados.
 
-El directorio devstossim contiene los modelos para simulación de redes de sensores y 
+El directorio *devstossim* contiene los modelos para simulación de redes de sensores y 
 aplicaciones cliente y servidor básicas. Se compone de los siguientes subdirectorios:
 
-    * client_mote: es una aplicación cliente básica que se compila junto con las 
-                   aplicaciones de TinyOS. Más adelante se detalla su uso.
+* __client_mote__: es una aplicación cliente básica que se compila junto con las aplicaciones de TinyOS. Más adelante se detalla su uso.
 
-    * interface: contiene la interfase del simulador con TinyOS y la implementación del 
-                 modelo TinyOSProcessor.
+* __interface__: contiene la interfase del simulador con TinyOS y la implementación del modelo TinyOSProcessor.
 
-    * make: contiene los Makefiles que permiten integrar el framework de simulación en el 
-            sistema de construcción (build system) de TinyOS; esto hace posible compilar 
-            las aplicaciones de TinyOS para ser ejecutadas en el simulador.
+* __make__: contiene los Makefiles que permiten integrar el framework de simulación en el sistema de construcción (build system) de TinyOS; esto hace posible compilar las aplicaciones de TinyOS para ser ejecutadas en el simulador.
 
- 
-    * model: contiene las implementaciones de los modelos DEVS descriptos en este trabajo 
-             (con la excepción del modelo TinyOSProcessor). Estás son las clases base que 
-             modelan el mote y se pueden extender para agregar comportamiento o tomar como 
-             ejemplo para generar nuevas implementaciones.
+* __model__: contiene las implementaciones de los modelos DEVS descriptos en este trabajo (con la excepción del modelo TinyOSProcessor). Estás son las clases base que modelan el mote y se pueden extender para agregar comportamiento o tomar como ejemplo para generar nuevas implementaciones.
 
-    * platforms: este directorio contiene la contraparte TinyOS del framework de 
-                 simulación.
+* __platforms__: este directorio contiene la contraparte TinyOS del framework de simulación.
 
-    * server: es un programa servidor básico que ejecuta el modelo acoplado RadioMedium 
-              junto a la interfaz de usuario DEVS. A este servidor se conectan los motes 
-              cliente (aplicaciones TinyOS). Se puede tomar como ejemplo para correr 
-              cualquier modelo acoplado de DEVS ya que el código es muy reducido. 
-              Más adelante se detalla su uso.
+* __server__: es un programa servidor básico que ejecuta el modelo acoplado *RadioMedium* junto a la interfaz de usuario DEVS. A este servidor se conectan los motes cliente (aplicaciones TinyOS). Se puede tomar como ejemplo para correr cualquier modelo acoplado de DEVS ya que el código es muy reducido. Más adelante se detalla su uso.
 
 ------------------------------------------------------------------------------------------
 
-1.2. Compilación de aplicaciones TinyOS con DEVS-TOSSIM
+### 1.2. Compilación de aplicaciones TinyOS con DEVS-TOSSIM
 
 Para compilar aplicaciones TinyOS en DEVS-TOSSIM es necesario exportar las variables de 
-entorno DEVSBASE y TOSMAKE_PATH. Suponiendo que se haya instalado el simulador en el 
+entorno *DEVSBASE* y *TOSMAKE_PATH*. Suponiendo que se haya instalado el simulador en el 
 directorio /opt/devs se debe ejecutar:
 
     export DEVSBASE=/opt/devs/src
     export TOSMAKE_PATH=$DEVSBASE/devstossim/make/
 
-DEVS-TOSSIM agrega una plataforma "devs" a TinyOS. Para compilar una aplicación contra el 
+DEVS-TOSSIM agrega una plataforma "*devs*" a TinyOS. Para compilar una aplicación contra el 
 simulador se debe cambiar al directorio de la aplicación TinyOS que se desee compilar y 
-ejecutar: make devs. Por ejemplo:
+ejecutar: *make devs*. Por ejemplo:
 
     cd /opt/tinyos-2.1.2/apps/RadioCountToLeds/
     make devs
@@ -77,11 +64,11 @@ cliente mote y se lee el siguiente mensaje:
 
 ------------------------------------------------------------------------------------------
 
-1.3. Compilación del servidor
+### 1.3. Compilación del servidor
 
 ------------------------------------------------------------------------------------------
 
-El programa servidor de ejemplo ejecuta el modelo acoplado RadioMedium en la interfaz de 
+El programa servidor de ejemplo ejecuta el modelo acoplado *RadioMedium* en la interfaz de 
 usuario de DEVS. Este programa es necesario recompilarlo solamente en caso de realizar 
 cambios sobre el citado modelo. Para compilarlo se debe hacer:
 
@@ -92,60 +79,54 @@ Esto genera un binario server.
 
 ------------------------------------------------------------------------------------------
 
-1.4. La interfaz de usuario de DEVS-TOSSIM
+### 1.4. La interfaz de usuario de DEVS-TOSSIM
 
 El framework DEVS incluye una interfaz de usuario básica que se compila junto al simulador 
 DEVS de mayor jerarquía. Un ejemplo es el programa server descripto precedentemente.
 
 La interfaz provee los siguientes comandos:
 
-    * dump. registra la cola de eventos de DEVS en la bitácora (log).
+* __dump__. registra la cola de eventos de DEVS en la bitácora (log).
 
-    * help. Muestra los comandos disponibles.
+* __help__. Muestra los comandos disponibles.
 
-    * info. Imprime información básica de la simulación. Esto incluye:
+* __info__. Imprime información básica de la simulación. Esto incluye:
 
-        - Model: El nombre del modelo de mayor jerarquía.
+  * *Model*: El nombre del modelo de mayor jerarquía.
 
-        - Childs: cantidad de nodos conectados a ese modelo.
+  * *Childs*: cantidad de nodos conectados a ese modelo.
 
-        - nextTN: tiempo del próximo evento DEVS.
+  * *nextTN*: tiempo del próximo evento DEVS.
 
-        - Event queue size: cantidad de elementos en la cola de eventos de DEVS.
+  * *Event queue size*: cantidad de elementos en la cola de eventos de DEVS.
 
-        - Total Exec. time: tiempo total que se utilizó para correr la simulación.
+  * *Total Exec. time*: tiempo total que se utilizó para correr la simulación.
 
-        - Avg. Exec. time: tiempo promedio de ejecución de cada evento DEVS.
+  * *Avg. Exec. time*: tiempo promedio de ejecución de cada evento DEVS.
 
-        - Time factor: la forma en que la simulación está manejando el tiempo. Ver comando 
-                       time más adelante.
-        - Iterations: cantidad de iteraciones o pasos de simulación ejecutados.
+  * *Time factor*: la forma en que la simulación está manejando el tiempo. Ver comando *time* más adelante.
 
-    * loop. Inicia un ciclo infinito de simulación.
-    
-    * step [N]. Si se especifica un argumento, ejecuta esa cantidad de pasos de 
-                simulación. Si no se especifica un argumento, ejecuta un único paso de 
-                simulación.
+  * *Iterations*: cantidad de iteraciones o pasos de simulación ejecutados.
 
-    * stop. Detiene la ejecución de la simulación.
+* __loop__. Inicia un ciclo infinito de simulación.
 
-    * time [T]. Controla el tiempo durante la simulación. Si se especifica 1, el simulador 
-                ejecuta en tiempo real. Si se especifica 0, ejecuta tan rápido como sea 
-                posible. Si se especifica un número mayor a 1, se desacelera la simulación
-                (expansión del tiempo). Si se especifica un número menor a 1, se acelera 
-                la simulación (contracción del tiempo).
+* __step [N]__. Si se especifica un argumento, ejecuta esa cantidad de pasos de simulación. Si no se especifica un argumento, ejecuta un único paso de simulación.
 
-    * quit. Cierra el simulador y la conexión con todos los nodos conectados (childs).
+* __stop__. Detiene la ejecución de la simulación.
+
+* __time [T]__. Controla el tiempo durante la simulación. Si se especifica 1, el simulador ejecuta en tiempo real. Si se especifica 0, ejecuta tan rápido como sea posible. Si se especifica un número mayor a 1, se desacelera la simulación (expansión del tiempo). Si se especifica un número menor a 1, se acelera la simulación (contracción del tiempo).
+
+* __quit__. Cierra el simulador y la conexión con todos los nodos conectados (childs).
 
 
-La simulación se registra utilizando syslog y se utiliza la facilidad USER. Todos los logs
-están precedidos por la cadena "DEVSTOSSIM" y se indica el PID del proceso que lo originó
+La simulación se registra utilizando syslog y se utiliza la facilidad *USER*. Todos los logs
+están precedidos por la cadena "*DEVSTOSSIM*" y se indica el PID del proceso que lo originó
 y una cadena adicional que distingue si la línea de log fue generada por un modelo DEVS o
 por TinyOS.
 
 ------------------------------------------------------------------------------------------
 
-1.5. Ejecución de una simulación con DEVS-TOSSIM
+### 1.5. Ejecución de una simulación con DEVS-TOSSIM
 
 Para ejecutar una simulación con DEVS-TOSSIM, primero es necesario ejecutar el programa 
 servidor como sigue (el parámetro especifica en que puerto TCP escucha el servidor):
@@ -154,32 +135,24 @@ servidor como sigue (el parámetro especifica en que puerto TCP escucha el servi
     ./server 5001
 
 Luego, se debe ejecutar el programa mote que se generó al compilar la aplicación TinyOS 
-utilizando la plataforma devs. Cada instancia de este programa representa un nodo sensor 
+utilizando la plataforma *devs*. Cada instancia de este programa representa un nodo sensor 
 independiente. El programa recibe los siguientes argumentos:
 
-    * server: nombre del equipo y puerto donde se encuentra el servidor. 
-              Por ejemplo: localhost:5001.
+* __server__: nombre del equipo y puerto donde se encuentra el servidor. Por ejemplo: localhost:5001.
 
-    * name: nombre del nodo sensor.
+* __name__: nombre del nodo sensor.
 
-    * id: id del nodo sensor en TinyOS.
+* __id__: id del nodo sensor en TinyOS.
 
-    * duty-cycle (opcional): ciclo de trabajo que utilizará el transceiver especificado 
-                             como un número entre 0 y 1. Por defecto, se utiliza 1 con lo 
-                             que el transceiver no se suspende.
+* __duty-cycle (opcional)__: ciclo de trabajo que utilizará el transceiver especificado como un número entre 0 y 1. Por defecto, se utiliza 1 con lo que el transceiver no se suspende.
 
-    * x,y,z (opcional): posición del nodo sensor en el espacio.
+* __x,y,z (opcional)__: posición del nodo sensor en el espacio.
 
-    * serial port (opcional): si se especifica un número distinto de cero, se activa el 
-                              serial forwarder en ese puerto.
+* __serial port (opcional)__: si se especifica un número distinto de cero, se activa el *serial forwarder* en ese puerto.
 
-    * sensor value (opcional): si se especifica un valor, el sensor oscilará alrededor de 
-                               ese valor; caso contrario, el valor será al azar.
+* __sensor value (opcional)__: si se especifica un valor, el sensor oscilará alrededor de ese valor; caso contrario, el valor será al azar.
 
-    * data sensor port (opcional): si se especifica este parámetro, se ignora sensor value 
-                                   y se instancia en su lugar un sensor del tipo 
-                                   DataSensor que esperará información de sensado en el 
-                                   puerto especificado.
+* __data sensor port (opcional)__: si se especifica este parámetro, se ignora sensor value y se instancia en su lugar un sensor del tipo *DataSensor* que esperará información de sensado en el puerto especificado.
 
 Por ejemplo, para ejecutar los siguientes dos nodos:
 
@@ -196,29 +169,23 @@ Se debe hacer:
     ./mote localhost:5001 root 0 0.5 0,0,0 9002 5000 &
     ./mote localhost:5001 node1 1 0.5 0,0,50 0 7000 &
 
-Adicionalmente, se incluye un script Bash llamados nodes.sh que puede encontrarse en el 
-directorio devstossim/client_mote y que genera una grilla de nodos con valores de sensor 
-al azar. Este script recibe los siguientes argumentos:
+Adicionalmente, se incluye un script Bash llamado *nodes.sh* que puede encontrarse en el directorio *devstossim/client_mote* y que genera una grilla de nodos con valores de sensor al azar. Este script recibe los siguientes argumentos:
  
-    * binary: ruta al programa de TinyOS que se desea a ejecutar.
+* __binary__: ruta al programa de TinyOS que se desea a ejecutar.
 
-    * nodes: cantidad total de nodos
+* __nodes__: cantidad total de nodos
 
-    * deep: cantidad de filas en la grilla. Es decir: si se especifican 25 nodos y deep 5 
-            se genera una grilla de 5 x 5.
+* __deep__: cantidad de filas en la grilla. Es decir: si se especifican 25 nodos y deep 5 se genera una grilla de 5 x 5.
 
-    * x step: distancia entre nodos sobre el eje X.
+* __x step__: distancia entre nodos sobre el eje X.
 
-    * y step: distancia entre nodos sobre el eje Y.
+* __y step__: distancia entre nodos sobre el eje Y.
 
 Por ejemplo, si se ejecuta el script con los siguientes argumentos:
 
     ./nodes.sh /opt/tinyos-2.1.2/apps/RadioCountToLeds/simbuild/mote 25 5 30 20
 
-se genera una grilla de 5 x 5 donde los nodos están espaciados 30 metros sobre el eje X 
-y 20 metros sobre el eje Y. El programa muestra la grilla generada donde puede observarse 
-la posición en la primer fila y la primer columna y el identificador del nodo en el resto 
-de las celdas:
+se genera una grilla de 5 x 5 donde los nodos están espaciados 30 metros sobre el eje X y 20 metros sobre el eje Y. El programa muestra la grilla generada donde puede observarse la posición en la primer fila y la primer columna y el identificador del nodo en el resto de las celdas:
 
     Y\X	 30	 60	 90	120	150	
      20	  1	  2	  3	  4	  5	
@@ -230,11 +197,10 @@ de las celdas:
 
 ------------------------------------------------------------------------------------------
 
-2. Manual de desarrollo
+## 2. Manual de desarrollo
 
-------------------------------------------------------------------------------------------
 
-2.1. Introducción
+### 2.1. Introducción
 
 Este manual explica brevemente como utilizar el framework DEVS y generar nuevos modelos. 
 El framework DEVS es genérico y puede utilizarse para realizar otros simuladores que no 
@@ -245,7 +211,7 @@ simples, como ser la clase Timer, que se pueden tomar como referencia.
 
 ------------------------------------------------------------------------------------------
 
-2.2. Creación de nuevos modelos atómicos DEVS
+### 2.2. Creación de nuevos modelos atómicos DEVS
 
 Para generar un nuevo modelo atómico DEVS se debe heredar de la clase abstracta 
 AtomicModel. Esta clase define los siguientes tres métodos abstractos para los cuales 
@@ -325,7 +291,7 @@ métodos outputPorts() e inputPorts(). Por ejemplo:
 
 ------------------------------------------------------------------------------------------
  
-2.3. Creación de nuevos modelos acoplados DEVS 
+### 2.3. Creación de nuevos modelos acoplados DEVS 
 
 Para generar nuevos modelos acoplados se utiliza la clase CoupledModel. Esta clase puede 
 instanciarse directamente o derivarse para definir el modelo acoplado en el constructor o 
@@ -393,7 +359,7 @@ modelo acoplado implica  los siguientes cuatro puntos:
 
 ------------------------------------------------------------------------------------------
 
-2.4. Instanciación de simuladores
+### 2.4. Instanciación de simuladores
 
 Para realizar una simulación, es necesario instanciar los simuladores correspondientes. 
 Cada modelo DEVS debe asociarse con un simulador encargado de ejecutar ese modelo. 
@@ -450,7 +416,7 @@ el ejemplo siguiente:
 
 ------------------------------------------------------------------------------------------
  
-2.5. Código que puede utilizarse como referencia
+### 2.5. Código que puede utilizarse como referencia
 
 Los siguientes archivos del simulador se pueden utilizar como ejemplo de uso de otras 
 clases y funcionalidades del framework DEVS-TOSSIM:
