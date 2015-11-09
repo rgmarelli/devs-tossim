@@ -237,14 +237,14 @@ Por otro lado, la función de duración de estado tiene una implementación por 
 
 ##### virtual TIME timeAdvanceFunction()
 
-    La variable de estado sigma se puede asignar invocando el método *setSigma()* en el 
+    La variable de estado sigma se puede asignar invocando el método setSigma() en el 
     método que corresponda (por ejemplo, en internalTransition).
      
-    El método *timeAdvanceFunction()* se puede sobrecargar en las clases derivadas con el 
+    El método timeAdvanceFunction() se puede sobrecargar en las clases derivadas con el 
     fin de proveer una implementación diferente.
      
-     La clase *TIME* representa el tiempo en DEVS y admite la asignación de un valor infinito
-    para pasivar el modelo: *DEVS::TIME::infinity()*. Tiene precisión de nanosegundos.
+     La clase TIME representa el tiempo en DEVS y admite la asignación de un valor infinito
+    para pasivar el modelo: DEVS::TIME::infinity(). Tiene precisión de nanosegundos.
 
 
 Respecto al control de las fases o estados en los que puede estar el modelo se proveen los siguientes métodos:
@@ -356,54 +356,43 @@ Para realizar una simulación, es necesario instanciar los simuladores correspon
 Cada modelo DEVS debe asociarse con un simulador encargado de ejecutar ese modelo. 
 Por ejemplo: 
 
-  SimpleAtomic atomic_model1( "modelo1" );
-  SimpleAtomic atomic_model2( "modeol2" );
-  DEVS::CoupledModel coupled( "UnModeloAcoplado" );
+    SimpleAtomic atomic_model1( "modelo1" );
+    SimpleAtomic atomic_model2( "modeol2" );
+    DEVS::CoupledModel coupled( "UnModeloAcoplado" );
+    
+    DEVS::AtomicSimulator simulator1( &atomic_model1);
+    DEVS::AtomicSimulator simulator2( &atomic_model2);
+    DEVS::CoupledSimulator coupled_simulator( &coupled );
 
-  DEVS::AtomicSimulator simulator1( &atomic_model1);
-  DEVS::AtomicSimulator simulator2( &atomic_model2);
-  DEVS::CoupledSimulator coupled_simulator( &coupled );
+Las líneas de código precedentes instancian dos modelos atómicos y un modelo acoplado e instancian los simuladores correspondientes a cada modelo.
 
-    Las líneas de código precedentes instancian dos modelos atómicos y un modelo acoplado 
-    e instancian los simuladores correspondientes a cada modelo.
+    coupled_simulator.addSimulator( &simulator1 );
+    coupled_simulator.addSimulator( &simulator2 );
 
-  coupled_simulator.addSimulator( &simulator1 );
-  coupled_simulator.addSimulator( &simulator2 );
+Una vez que se han instanciado los simuladores se deben registrar los simuladores de los modelos componentes con el simulador del modelo acoplado que componen.
 
-    Una vez que se han instanciado los simuladores se deben registrar los simuladores de 
-    los modelos componentes con el simulador del modelo acoplado que componen.
+    for( int i=0; i < 20; i++ ) {
+        coupled_simulator.simulate();
+    }
 
-  for( int i=0; i < 20; i++ ) {
-      coupled_simulator.simulate();
-  }
+El código anterior ejecuta 20 pasos de simulación en tiempo virtual (tan rápido como sea posible).
 
-    El código anterior ejecuta 20 pasos de simulación en tiempo virtual (tan rápido como 
-    sea posible).
+Alternativamente, se pueden utilizar las clases *CoupledCompositeModel* y *CoupledCompositeSimulator* para generar toda la jerarquía de simuladores como se muestra en el ejemplo siguiente:
 
+     DEVS::CoupledCompositeModel coupled( "UnModeloAcoplado" );
+     SimpleModel* model1 = new SimpleModel( "modelo1" );
+     SimpleModel* model2 = new SimpleModel( "modelo2" );
+     
+     coupled.add( model1 );
+     coupled.add( model2 );
 
-Alternativamente, se pueden utilizar las clases CoupledCompositeModel y 
-CoupledCompositeSimulator para generar toda la jerarquía de simuladores como se muestra en
-el ejemplo siguiente:
+Los modelos se registran en el modelo acoplado. Al usar *CoupledCompositeModel*, el registro se realiza utilizando directamente el objeto en lugar del nombre del modelo.
 
-  DEVS::CoupledCompositeModel coupled( "UnModeloAcoplado" );
+El modelo registrado se destruye automáticamente cuando se destruye el modelo acoplado. Los modelos componentes pueden crearse y registrarse directamente en el constructor del modelo acoplado.
 
-  SimpleModel* model1 = new SimpleModel( "modelo1" );
-  SimpleModel* model2 = new SimpleModel( "modelo2" );
+    DEVS::CoupledCompositeSimulator coupled_simulator(&coupled);
 
-  coupled.add( model1 );
-  coupled.add( model2 );
-
-    Los modelos se registran en el modelo acoplado. Al usar CoupledCompositeModel, el 
-    registro se realiza utilizando directamente el objeto en lugar del nombre del modelo.
-
-    El modelo registrado se destruye automáticamente cuando se destruye el modelo 
-    acoplado. Los modelos componentes pueden crearse y registrarse directamente en el 
-    constructor del modelo acoplado.
-
-  DEVS::CoupledCompositeSimulator coupled_simulator(&coupled);
-
-    Al instanciar la clase CoupledCompositeSimulator se instancian automáticamente todos 
-    los simuladores de los modelos componente.
+Al instanciar la clase CoupledCompositeSimulator se instancian automáticamente todos los simuladores de los modelos componente.
 
 ------------------------------------------------------------------------------------------
  
@@ -412,54 +401,50 @@ el ejemplo siguiente:
 Los siguientes archivos del simulador se pueden utilizar como ejemplo de uso de otras 
 clases y funcionalidades del framework DEVS-TOSSIM:
 
-* Interfaz de usuario y simuladores remotos (servidor)
+* __Interfaz de usuario y simuladores remotos (servidor)__
 
-  - devstossim/server/main.cpp
+  * *devstossim/server/main.cpp*
 
-    Este programa muestra el uso de las clases RemoteSimulatorAcceptor y RemoteBinding 
-    para generar un simulador de un modelo acoplado que acepta conexiones de simuladores 
-    remotos. Además, muestra como se instancia y activa la interfaz de línea de comandos 
-    del framework DEVS. 
+     Este programa muestra el uso de las clases RemoteSimulatorAcceptor y RemoteBinding 
+     para generar un simulador de un modelo acoplado que acepta conexiones de simuladores 
+     remotos. Además, muestra como se instancia y activa la interfaz de línea de comandos 
+     del framework DEVS. 
 
+* __Simuladores remotos (cliente)__
 
-* Simuladores remotos (cliente)
+  * *devstossim/client_mote/mote.cpp*
 
-  - devstossim/client_mote/mote.cpp
+     Este programa muestra el uso de la clase RemoteSimulatorConnector para conectarse a un
+     simulador remoto incluyendo el envío de parámetros en la conexión. Además, es un 
+     ejemplo de instanciación y activación de la clase DataCollector.
 
-    Este programa muestra el uso de la clase RemoteSimulatorConnector para conectarse a un
-    simulador remoto incluyendo el envío de parámetros en la conexión. Además, es un 
-    ejemplo de instanciación y activación de la clase DataCollector.
+* __Integración con sistemas externos (DataCollector)__
 
+  * *devstossim/model/Data_Sensor.h*
 
-* Integración con sistemas externos (DataCollector)
+     Este modelo utiliza la clase DataCollector para leer línea a línea valores de sensor. 
+     Muestra como inspeccionar el stream de datos sin retirar la información del buffer.
 
-  - devstossim/model/Data_Sensor.h
+  * *devstossim/model/Connected_Serial.h*
 
-    Este modelo utiliza la clase DataCollector para leer línea a línea valores de sensor. 
-    Muestra como inspeccionar el stream de datos sin retirar la información del buffer.
+     Este modelo utiliza la clase DataCollector para intercambiar información 
+     (envío y recepción) con un sistema externo. Además, muestra como intercambiar mensajes
+     durante la conexión con el sistema externo (clase Serial_Handshake).
 
-  - devstossim/model/Connected_Serial.h
+* __Sobrecarga de la función de traducción de la salida__
 
-    Este modelo utiliza la clase DataCollector para intercambiar información 
-    (envío y recepción) con un sistema externo. Además, muestra como intercambiar mensajes
-    durante la conexión con el sistema externo (clase Serial_Handshake).
+  * *devstossim/model/RadioMedium.h*
 
-* Sobrecarga de la función de traducción de la salida
+     El modelo de radio sobrecarga la función de la salida para aplicar la ecuación de 
+     Friis. En este sentido, muestra como generar un mensaje de transición externo 
+     (ExternalMessage) a partir de un mensaje de salida (OutputMessage). Adicionalmente, 
+     este modelo utiliza el método addCouplingForAllModels para generar automáticamente los
+     acoplamientos de los modelos componentes.
 
-  - devstossim/model/RadioMedium.h
+* __Modelo de nodos sensores__
 
-    El modelo de radio sobrecarga la función de la salida para aplicar la ecuación de 
-    Friis. En este sentido, muestra como generar un mensaje de transición externo 
-    (ExternalMessage) a partir de un mensaje de salida (OutputMessage). Adicionalmente, 
-    este modelo utiliza el método addCouplingForAllModels para generar automáticamente los
-    acoplamientos de los modelos componentes.
+  * *devstossim/model/Mote.h*
 
-* Modelo de nodos sensores
-
-  - devstossim/model/Mote.h
-
-    El modelo Mote es el modelo básico de nodo sensor. Este modelo puede usarse como base
-    para generar nodos sensores que tengan otros componentes (otro tipo de transceiver, 
-    diferentes sensores, incorporar un modelo de batería, etc.).
-
-
+     El modelo Mote es el modelo básico de nodo sensor. Este modelo puede usarse como base
+     para generar nodos sensores que tengan otros componentes (otro tipo de transceiver, 
+     diferentes sensores, incorporar un modelo de batería, etc.).
