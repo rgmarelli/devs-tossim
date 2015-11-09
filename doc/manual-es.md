@@ -392,7 +392,7 @@ El modelo registrado se destruye automáticamente cuando se destruye el modelo a
 
     DEVS::CoupledCompositeSimulator coupled_simulator(&coupled);
 
-Al instanciar la clase CoupledCompositeSimulator se instancian automáticamente todos los simuladores de los modelos componente.
+Al instanciar la clase *CoupledCompositeSimulator* se instancian automáticamente todos los simuladores de los modelos componente.
 
 ------------------------------------------------------------------------------------------
  
