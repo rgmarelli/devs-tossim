@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_COUPLED_SIMULATOR__
 #define DEVS_CPP_COUPLED_SIMULATOR__
@@ -52,8 +64,8 @@ public:
             Event event = queue_.pop();
             Simulator* simulator = event.simulator();
             if(simulator != NULL) {
-                /* Notar que applyDeltFunction no es necesaria porque con la cola de eventos
-                   conozco si tengo que realizar una transicion externa o una interna.
+                /* applyDeltFunction is not necessary because the event queue allows
+                   to know if an internal or an external transition must take place.
                  */
                 if(event.internal()) {
                     OutputMessage *message = simulator->internalTransition(event.TN());
@@ -63,7 +75,7 @@ public:
                     }
                 }
                 else {
-                    // Mensaje entre simuladores hermanos
+                    // Message between simulators of the same coupled model
                     simulator->externalTransition(event.TN(),event.message());
                 }
                 if( simulator->error() ) {
@@ -84,8 +96,8 @@ public:
     }
  
     void externalTransition(TIME t, ExternalMessage* message) {
-        /* Acomplamiento de entrada externa que conecta los ports de entrada
-           del modelo acoplado a uno o mas de los ports de los componentes. (wainer) */
+        /* Coupling of an external input that connects input ports of the coupled model
+           with one or more ports of the component models. */
         CoupledModel::PortList portList = model_->couplings(message->dstPort());
         if(portList.size() > 0) {
             CoupledModel::PortList::iterator it = portList.begin();
@@ -163,7 +175,7 @@ private:
     }
 
 
-    mutable EventQueue queue_; /* mutable: Para poder llamarlo desde nextTN() que debe ser const */
+    mutable EventQueue queue_; /* mutable: so it can be call from the nextTN() method that must be const */
     SimulatorMap childs_;
 
     CoupledModel *model_;
@@ -176,14 +188,14 @@ private:
     OutputMessage* processOutputMessage(TIME t, OutputMessage *message)
     {  
         OutputMessage* myOutputMessage=NULL;
-        // El mensaje es para un simulador hermano del actual o para el padre.
+        // Message for a component simulator or for the upper level simulator.
         CoupledModel::PortList portList = model_->couplings(message->srcPort());
         Log::write(LOG_DEBUG,"DEVS","[%s] processOutputMessage = %s", model_name().c_str(), message->srcPort().name().c_str());
         if(portList.size() > 0) {
             CoupledModel::PortList::iterator it = portList.begin();
             while(it != portList.end()) {
                  if(model_->outputPorts().hasPort(*it)) {
-                     /* El puerto esta conectado a un puerto de salida. */
+                     /* The port is connected to an output port. */
                      myOutputMessage = new OutputMessage(model_->outputPorts().getPort(*it));
                      myOutputMessage->putContent(message->content(),message->size());
                  }

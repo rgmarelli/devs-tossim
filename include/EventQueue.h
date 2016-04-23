@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_EVENT_QUEUE__
 #define DEVS_CPP_EVENT_QUEUE__
@@ -56,7 +68,7 @@ public:
 
    Event pop() {
        if(empty()) {
-           // No deberia pasar
+           //Shouldn't happen
            Log::write(LOG_CRIT, "DEVS", "EventQueue is NULL (pop)");
            exit(0);
        }
@@ -67,7 +79,7 @@ public:
 
    Event front() {
        if(empty()) {
-           // No deberia pasar
+           //Shouldn't happen
            Log::write(LOG_CRIT, "DEVS", "EventQueue is NULL (front)");
            exit(0);
        }
@@ -99,8 +111,8 @@ private:
             it--;
             count++;
             if( !(it->TN() > event.TN()) ) {
-                /* Inserto el evento despues del primer evento que tiene menor o igual TN.
-                   De este modo eventos con el mismo TN son procesados en el orden de llegada */
+                /* Insert the event after the first event with equal or lower TN.
+                   This ensures that events are processed conforming their order of arrival. */
                 it++;
                 events_.insert(it,event);
                 return;
