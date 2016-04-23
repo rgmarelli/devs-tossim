@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_STREAM__
 #define DEVS_CPP_STREAM__
@@ -152,7 +164,7 @@ private:
 	}
 
 	unsigned int tail() {
-		/* Espacio ocupado del ultimo buffer */
+		/* Used space of the last buffer */
 		if( size_ == 0 ) return 0;
 		return (size_ - (v_->size()-1)*CHUNKSIZE);
 	}

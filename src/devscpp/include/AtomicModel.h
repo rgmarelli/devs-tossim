@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_ATOMIC_MODEL__
 #define DEVS_CPP_ATOMIC_MODEL__
@@ -26,31 +38,38 @@ public:
     AtomicModel(const std::string name) : Model(name), sigma_(DEVS::TIME::infinity())
     {}
 
-    // Funcion de transicion interna (delta int)
+    // DEVS internal transition (delta int)
     virtual void internalTransition()=0;
 
-    // Funcion de transicion externa (delta Ext)
+    // DEVS external transition (delta Ext)
+    // It receives the external message as a parameter. 
+    // The memory allocated for this pointer is automatically released by the framework. 
     virtual void externalTransition(ExternalMessage* message)=0;
 
-    // Funcion de salida (Y)
+    // DEVS output message (Y)
+    // This function is called to generate an output message that depends on the state of the model. 
+    // To return an output message, you must allocate memory that will be released by the framework. 
+    // If you do not want to return an output message, this function must return *NULL*. 
     virtual OutputMessage* outputFunction()=0;
 
-    // Helper para poder tener el tiempo de la transición
+    // Helper function used to set the time during the transition
     virtual void internalTransition(const TIME &t) {
         this->tn_ = t;
         this->internalTransition();
     }
 
-    // Helper para poder tener el tiempo de la transición
+    // Helper function used to set the time during the transition
     virtual void externalTransition(const TIME &t, ExternalMessage* message) {
         this->tn_ = t;
         this->externalTransition(message);
     }
 
-    // Funcion de duracion de un estado (D)
+    // time advance function (D)
     virtual TIME timeAdvanceFunction() { 
-        // La implementacion por defecto de la funcion devuelve sigma
-        // que es el tiempo durante el cual permanezco en la fase actual
+        /* The state variable "sigma" can be assigned invoking the method setSigma(). 
+           The method *timeAdvanceFunction()* can be overloaded to provide a different implementation.
+           The class TIME represents time in DEVS and allows passivating a model with the constant: 
+           DEVS::TIME::infinity(). It has nanosecond precision. */
         return sigma_;
     }
 
@@ -71,8 +90,8 @@ protected:
 
     void setPhase(std::string phase) { 
         if( !phaseIsValid(phase) ) {
-            // La fase a la que se quiere ir no esta registrada.
-            // Es un error en la definicion del modelo.
+            // The phase is not registered
+            // It's an error in the definition of the model
             Log::write(LOG_CRIT,"DEVS", "Phase %s not found for model %s",phase.c_str(),name().c_str());
             exit(1);
         }
@@ -100,8 +119,8 @@ protected:
     TIME tn() { return this->tn_; }    
 
 private:
-    TIME sigma_; // Tiempo durante el cual permanezco en la fase actual
-    TIME tn_; // Tiempo en el que tuvo lugar la ultima transición externa o interna.
+    TIME sigma_; //Duration of the current phase
+    TIME tn_; //Time of the last internar or external transition
 
     std::string phase_;
     std::string previous_phase_;

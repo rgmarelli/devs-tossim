@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_UI_COMMAND_LINE__
 #define DEVS_CPP_UI_COMMAND_LINE__
@@ -55,9 +67,9 @@ protected:
 
     static char* cmd_generator (const char *text, int state) {
         /* 
-           El código para este método esta basado en el ejemplo provisto en: GNU Readline Library documentation
+           Coded based in the example that can be found in the GNU Readline Library documentation
            http://cnswww.cns.cwru.edu/php/chet/readline/readline.html
-           Accedido: 18/08/2014
+           Accessed: 18/08/2014
         */
 
         static int list_index=0, len=0;

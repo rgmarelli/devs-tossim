@@ -1,7 +1,19 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * devsCPP - a DEVS C++ library
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef DEVS_CPP_COUPLED_MODEL__
 #define DEVS_CPP_COUPLED_MODEL__
@@ -24,7 +36,7 @@ public:
     CoupledModel(const std::string name) : Model(name)
     {}
 
-    /* Suponemos que el nombre del modelo es unico dentro del contexto de un modelo acoplado */
+    /* The name of the model is required to be unique in the context of a coupled model */
     void add(std::string model_name) {
         if( this->name() == model_name ) {
             Log::write(LOG_WARNING,"DEVS","Unable to add child model with the same than the coupled model (%s)",model_name.c_str());
@@ -63,8 +75,8 @@ public:
         return this->models_;
     }
 
-    // Función de traducción (Zij)
-    // La implementación por defecto devuelve el mismo mensaje
+    // Output translation function (Zij)
+    // Default implementation returns the message unmodified
     virtual ExternalMessage* translate( OutputMessage *message, Port &dstPort ) {
          ExternalMessage* myMessage = new ExternalMessage(dstPort);
          myMessage->putContent(message->content(),message->size());
@@ -75,17 +87,17 @@ public:
     virtual bool addCoupling(const Port& srcPort, const Port& dstPort) {
 
         if( srcPort.empty() || dstPort.empty() ) {
-            /* Puertos no encontrados */
+            /* Port/s not found */
             return false;
         }
 
         if( srcPort.type() != dstPort.type()) {
-            /* El tipo de los puertos no coincide, entonces, no permito acoplarlos */
+            /* Port type mismatch */
             return false;
         }
 
         if(!validateCouplingSrcPort(srcPort) || !validateCouplingDstPort(dstPort)) {
-            /* Puertos no validos, entonces, no permito acoplarlos */
+            /* Invalid ports */
             return false;
         }
 
@@ -94,11 +106,11 @@ public:
                              srcPort.model_name().c_str(), srcPort.name().c_str(),
                              dstPort.model_name().c_str(), dstPort.name().c_str());
 
-        /* Registro el acoplamiento */
+        /* Register the coupling */
         couplings_[srcPort].push_back(dstPort);
     }
 
-    // Acoplar srcPort a todos los puertos con el nombre "dstPortName".
+    // Couple srcPort to every port named "dstPortName".
     virtual bool addCouplingForAllModels(const Port& srcPort, const std::string &dstPortName) {
         ModelList::const_iterator it = models_.begin();
         while(it != models_.end()) {
@@ -110,7 +122,7 @@ public:
         }
     }
 
-    // Acoplar todos los puertos con el nombre "srcPortName" a dstPort.
+    // Couple dstPort to every port named "srcPortName".
     virtual bool addCouplingForAllModels(const std::string &srcPortName, const Port& dstPort) {
         ModelList::const_iterator it = models_.begin();
         while(it != models_.end()) {
@@ -168,7 +180,7 @@ private:
             return this->inputPorts().hasPort(port);
         }
         if(hasModel(port.model_name())) {
-            // Solamente chequeamos si el modelo existe, no sus puertos
+            // Only check if the model exists but not its ports
             return true;
         }
         return false;
@@ -179,7 +191,7 @@ private:
             return this->outputPorts().hasPort(port);
         }
         if(hasModel(port.model_name())) {
-            // Solamente chequeamos si el modelo existe, no sus puertos
+            // Only check if the model exists but not its ports
             return true;
         }
         return false;
