@@ -19,7 +19,7 @@ DEVSTOSSIMDIR=$(DEVSBASE)/devstossim
 DEVSTARGET = simbuild/mote
 BUILDDIR   = simbuild/$(PLATFORM)
 OBJFILE    = $(BUILDDIR)/sim.o
-DEVSDIR     =$(DEVSBASE)/devsforcpp
+DEVSDIR     =$(DEVSBASE)/devscpp/include
 XML        = app.xml
 DUMPTYPES = -fnesc-dump=components -fnesc-dump=variables -fnesc-dump=constants -fnesc-dump=typedefs -fnesc-dump=interfacedefs -fnesc-dump=tags
 
