@@ -10,7 +10,7 @@ title: DEVS-TOSSIM
 author: Guido Marelli
 email: rgmarelli@gmail.com
 description: A DEVS framework for simulation of TinyOS wireless sensor networks
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/devs-tossim" # the subpath of your site, e.g. /blog
 url: "http://rgmarelli.github.io/devs-tossim/" # the base hostname & protocol for your site
 twitter_username: rgmarelli
 github_username:  rgmarelli
