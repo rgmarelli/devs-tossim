@@ -4,6 +4,24 @@
  *
  * El modelo acoplado RadiMedium
  */
+/* 
+ * DEVS-TOSSIM - a DEVS framework for simulation of TinyOS wireless sensor networks
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef DEVS_MOTE_RADIOMEDIUM__
 #define DEVS_MOTE_RADIOMEDIUM__
 
@@ -46,7 +64,7 @@ public:
 
 protected:
     bool radio_model_transmit( const RadioParams &src, const RadioParams &dst ) {
-        // Calcular la ecuación de Friis para los dos transceivers.
+        // Calculate the Friis equation for the two transceivers.
         float w = Math::wavelength( src.frequency );
         float R = Math::distance( src, dst );
         float Pt = Math::dbm_to_watts( src.tx_output_power );
@@ -54,13 +72,13 @@ protected:
         float Gr = Math::dbi_to_gain( dst.gain );
 
         if( R == 0 ) {
-            //Sanity check para evitar división por cero.
+            //Sanity check to avoid division by zero
             return true;
         }
 
         float Pr = Pt*(Gt*Gr)*pow( w/(4*Math::pi*R), 2 );
 
-        // Comparar el valor calculado de Pr con la potencia de recepción mínima del transceiver
+        // Compare the calculated reception power "Pr" with the minimun required power of the transceiver
         return ( Pr > Math::dbm_to_watts(dst.receiver_sensitivity) );
     }  
 

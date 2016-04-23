@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2013-2014 Ricardo Guido Marelli
+# Copyright (c) 2013 Ricardo Guido Marelli
 # All rights reserved.
 #
 

@@ -1,14 +1,26 @@
-/*
- * Copyright (c) 2013-2014 Ricardo Guido Marelli
- * All rights reserved.
+/* 
+ * DEVS-TOSSIM - a DEVS framework for simulation of TinyOS wireless sensor networks
+ * Copyright (c) 2013 Ricardo Guido Marelli
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef __DEVS_MOTE_TRANSCEIVER__
 #define __DEVS_MOTE_TRANSCEIVER__
 
 /* 
-Informacion del CC2420 (oficial): http://focus.ti.com/docs/prod/folders/print/cc2420.html
-La referencia a utilizar es el data-sheet.
+CC2420 information: http://focus.ti.com/docs/prod/folders/print/cc2420.html
 */
 #include <AtomicModel.h>
 #include <string>
@@ -32,22 +44,22 @@ public:
     Transceiver(const std::string name, float duty_cycle ) : AtomicModel(name), message_in_(NULL), message_out_(NULL), 
                                                              wakeup_interval_( DEVS::Time::infinity() ), 
                                                              start_stop_interval_( 1.3*DEVS::Time::mili_to_nano_sec ), /* 
-                                                                                       CC2420 spec: Before using the radio in either RX or TX mode, 
-                                                                                       the voltage regulator and crystal oscillator must be turned on 
-                                                                                       and become stable (see state diagram in the spec) */
+                                                                                   CC2420 spec: Before using the radio in either 
+                                                                                   RX or TX mode, the voltage regulator and crystal
+                                                                                   oscillator must be turned on and become stable */
                                                              duty_cycle_( duty_cycle ),
                                                              data_rate_( 250 /* Kbit/s - maximum data rate from 802.15.4 */ )
     {
-        /* Intercambio de paquetes hacia el medio */
+        /* Data interchange with the radio medium */
         outputPorts().add( DEVS::Port(name,"RadioTransmit",1) );
         inputPorts().add( DEVS::Port(name,"RadioReceive",1) );
         sendcount=0;
-        /* Intercambio de paquetes con TinyOS. O mejor dicho: con la capa MAC */
+        /* Data interchange with TinyOS */
         inputPorts().add( DEVS::Port(name,"AMSend",1) );
         outputPorts().add( DEVS::Port(name,"AMSendDone",1) );
         outputPorts().add( DEVS::Port(name,"AMReceive",1) );
 
-        /* Para poder apagarlo y prenderlo con TinyOS */
+        /* Ports for turning ON and OFF with TinyOS */
         inputPorts().add( DEVS::Port(name,"TurnOff",1) );
         inputPorts().add( DEVS::Port(name,"TurnOn",1) );
 
@@ -67,6 +79,7 @@ public:
         setPhase(TRANSCEIVER_OFF);
     }
 
+    // Internal transition (delta Int)
     virtual void internalTransition() {
         
         // Transmit
@@ -116,7 +129,7 @@ public:
         }
     }
 
-    // Funcion de transicion externa (delta Ext)
+    // External transition (delta Ext)
     virtual void externalTransition(DEVS::ExternalMessage* message) {
 
         DEVS::Log::write(LOG_DEBUG,"DEVS", "[%s] externalTransition phase=%s, dstPort=%s",
@@ -128,8 +141,6 @@ public:
 
         // Transceiver turn ON/OFF
         if( phaseIs(TRANSCEIVER_OFF) && message->dstPort().nameIs("TurnOn") ) {
-            /* TinyOS ordena start mediante split control y debe monitorear una interrupcion
-               para generar el evento de startDone */
             setSigma(this->start_stop_interval_);
             unsigned long wakeup_interval = message->content<uint16_t>()*DEVS::Time::mili_to_nano_sec;
             if( wakeup_interval > 0 ) {
@@ -197,7 +208,7 @@ public:
         }
     }
 
-    // Funcion de salida (Y)
+    // Output function (Y)
     virtual DEVS::OutputMessage* outputFunction() {
         if( phaseIs(TRANSCEIVER_TRANSMIT) ) {
             //printf(" message_out_.content_size() = %d\n", message_out_->size() );
