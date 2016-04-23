@@ -223,7 +223,7 @@ a {
       padding: 0;
       margin-bottom: 1rem; }
   .main-content hr {
-    height: 2px;
+    height: 1px;
     padding: 0;
     margin: 1rem 0;
     background-color: #eff0f1;
@@ -254,12 +254,11 @@ a {
 
 .nav {
   font-weight: bold;
-  float: right;
-  width:100%;
-  /*background-color:LightBlue ;*/
-  border-style: dashed ;
-  border-width: 0px 0px 1px 0px;
-  border-color: white;
+  /*background-color: white ;*/
+  border-style: solid ;
+  border-width: 0;
+  border-color: 363795;
+  text-align:center;
 }
   @media screen and (min-width: 64em) {
     .nav {
@@ -271,19 +270,19 @@ a {
     .nav {
       font-size: 0.90rem; } }
 
+
 .nav ul {
   margin: 0;
 }
 
 .nav ul li {
-  float: right;
   display:inline-block;
   margin:0.5em 1.5em 0.5em 0;
 }
 
 .nav ul li a {
   text-decoration:none;
-  color:wheat;
+  color: blue; /*wheat;*/
   transition:0.4s all;
   -webkit-transition:0.5s all;
   -o-transition:0.5s all;
@@ -338,31 +337,6 @@ hr.sep {
 .postsummary .postdate {
   font-style: italic;
   font-weight: bold;
-}
-
-.postnav {
-  width:100%;
-  margin: 1.0rem 0.0rem 1.0rem 0.0rem;
-}
-
-.postnav ul {
-  list-style: none;
-  margin: 0;
-  padding: .5em 0;
-}
-
-.postnav ul li {
-  display:inline;
-}
-
-.postnav ul li .prev {
-  float: left;
-  width: 45%;
-}
-
-.postnav ul li .next {
-  float: right;
-  width: 45%;
 }
 
 .post h2 {

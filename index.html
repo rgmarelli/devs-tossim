@@ -14,10 +14,21 @@ title: {{ site.name }}
 
 <p>Finally, it should be noted, that the DEVS framework is a generic DEVS implementation in C++ that can be used to simulate systems not related to wireless sensor networks.</p>
 
-<p><strong>More information: </strong><a href="https://github.com/rgmarelli/devs-tossim/wiki">DEVS-TOSSIM Wiki</a></a></p>
 
-  <hr class="sep" />
+<h2>The history behind of DEVS-TOSSIM</h2>
+
+<p>DEVS-TOSSIM software is the implementation of my degree thesis in computer engineering at the <a target="_blank" href="http://www.fi.uba.ar/">school of engineering of the University of Buenos Aires</a>.</p>
 
 
+<h2>Features</h2>
+
+
+<h2>Documentation</h2>
+<ul>
+{% for post in site.posts reversed  %}
+  <li>
+    <p><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+  </li>
+{% endfor %}
 
 </div>
