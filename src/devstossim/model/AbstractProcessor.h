@@ -82,12 +82,20 @@ protected:
         /* This is a simple approximation that can be used to calculate sigma for the phase.
          *           
          */
-        unsigned long ATMega128_MIPS = 16; /* Atmega128 SPEC */
-        unsigned long PC_MIPS = 100000; /* Aprox for an Intel core i7 */
+        DEVS::Time t=0;
+        if( 0 ) {
+            /* This method cause a lot of data lost; it's quite difficult
+               to meassure processor time... */
+            unsigned long ATMega128_MIPS = 16; /* Atmega128 SPEC */
+            unsigned long PC_MIPS = 100000; /* Aprox for an Intel core i7 */
 
-        double factor = PC_MIPS/ATMega128_MIPS; 
-
-        return elapsed*factor;
+            double factor = PC_MIPS/ATMega128_MIPS;
+            t = elapsed*factor;
+        }
+        else {
+            t = elapsed*100;
+        }
+        return t;
     }
 };
 
