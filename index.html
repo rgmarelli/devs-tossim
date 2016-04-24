@@ -8,19 +8,16 @@ title: {{ site.name }}
 
 <p><strong>DEVS-TOSSIM</strong> is a simulation framework, which implements the <em>DEVS formalism</em>, to test and simulate wireless sensor networks that use the <em>TinyOS</em> operating system. </p>
 
-<p>The simulator removes some limitations of the simulator "<em>TOSSIM</em>" of TinyOS, such as the inability to run nodes with different software and complexity in modeling diversity of node hardware and radio. However, the main difference is the application of the DEVS formalism to formally model all hardware components of a node and the radio medium, which allows testing the developed applications for the different types of nodes and its scaling. This framework also allows the replacement of the sensor component of a node, the addition of mobility, the implementation of a new radio model or modeling a complex sensing environment.</p>
-
-<p>Additionally, the simulator provides a simple user interface to control the simulation. This interface allows the user to control time during the simulation, for example: execute the simulation in real-time or as fast as possible.</p>
-
 <p>Finally, it should be noted, that the DEVS framework is a generic DEVS implementation in C++ that can be used to simulate systems not related to wireless sensor networks.</p>
 
-
-<h2>The history behind of DEVS-TOSSIM</h2>
-
-<p>DEVS-TOSSIM software is the implementation of my degree thesis in computer engineering at the <a target="_blank" href="http://www.fi.uba.ar/">school of engineering of the University of Buenos Aires</a>.</p>
-
-
 <h2>Features</h2>
+<ul>
+  <li><strong>Heterogeneous wireless sensor networks</strong>: DEVS-TOSSIM can simulate heterogeneous wireless sensor networks, which implies that in the same simulation can coexist nodes that run different software and hardware.</li>
+  <li><strong>Duty-cycling</strong>: the transceiver model supports duty cycling.</li>
+  <li><strong>User interface</strong>: simple user interface to control the simulation; the interface allows the user to control time during the simulation, for example: execute the simulation in real-time, as fast as possible or step-by-step.</li>
+  <li><strong>Integration with external systems</strong>: functionality is provided to integrate the simulator with external hardware or software systems.</li>
+  <li><strong>Extensible framework</strong>: the framework allows the replacement of the sensor component of a node, the addition of mobility, the implementation of a new radio model or modeling a complex sensing environment.</li>
+</ul>
 
 
 <h2>Documentation</h2>
@@ -30,5 +27,10 @@ title: {{ site.name }}
     <p><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
   </li>
 {% endfor %}
+</ul>
+
+<h2>The history behind of DEVS-TOSSIM</h2>
+
+<p>DEVS-TOSSIM software is the implementation of my degree thesis in computer engineering at the <a target="_blank" href="http://www.fi.uba.ar/">school of engineering of the University of Buenos Aires</a>.</p>
 
 </div>
