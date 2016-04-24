@@ -59,6 +59,8 @@ This commands will generate a binary called "*server*".
 The DEVS framework includes a basic user interface that is compiled with the root DEVS 
 simulator (the higher level simulator in the hierarchy).
 
+![The DEVS-TOSSIM user interface]({{ site.baseurl }}/images/devs-ui.png)
+
 The interface provides the following commands:
 
 * __dump__: dump the event queue to the log.
@@ -99,7 +101,7 @@ the following arguments:
 
 * __id__: id of the sensor node in TinyOS.
 
-* __duty-cycle (optional)__: duty-cycle that the transceiver will use as a number between 0 and 1. Default, is 1 (the transceiver is won't be suspended).
+* __duty-cycle (optional)__: duty-cycle that the transceiver will use as a number between 0 and 1. Default, is 1 (the transceiver won't be suspended).
 
 * __x,y,z (optional)__: position of the node in the space.
 
