@@ -3,6 +3,13 @@ layout: post
 title:  "Development guide"
 date:   2016-04-23 20:00:00 -0300
 ---
+
+* [Introduction](#introduction)
+* [Creating new DEVS atomic models](#creating-new-devs-atomic-models)
+* [Creating new DEVS coupled models](#creating-new-devs-coupled-models)
+* [Instantiation of simulators](#instantiation-of-simulators)
+* [Example code](#example-code)
+
 ## Introduction
 
 This guide explains how to use the DEVS framework and generate new DEVS models. The DEVS framework is generic and can be used to create simulations that have no relation with wireless sensor networks.
@@ -153,3 +160,40 @@ Note that when using CoupledCompositeModel, the child model instances are direct
 
 On instantiation, CoupledCompositeSimulator will instantiate all the simulators for the child models.
 
+## Example code
+
+The following files can be used as an example of usage of the DEVS-TOSSIM framework:
+
+### User interface and remote simulators (server)
+
+* **devstossim/server/main.cpp**
+    
+    This program demonstrates the use of *RemoteSimulatorAcceptor* and *RemoteBinding* classes to generate a simulator of a coupled model that accepts connections from remote simulators. In addition, shows how to instantiate the DEVS interface.
+
+### Remote simulators (client)
+
+* **devstossim/client_mote/mote.cpp**
+    
+    This program demonstrates the use of the *RemoteSimulatorConnector* class to connect to a remote simulator including sending parameters in the connection. It is also an example of instantiation and activation of the *DataCollector* class.
+
+### Integration with external systems (DataCollector)
+
+* **devstossim/model/Data_Sensor.h**
+
+    This model uses the *DataCollector* class to read line by line sensor values. It shows how to inspect the data stream without removing the information from the buffer.
+
+* **devstossim/model/Connected_Serial.h**
+
+    This model uses the *DataCollector* class to exchange information (send and receive) with an external system. In addition, it shows how to exchange messages during the connection to the external system (class *Serial_Handshake*).
+
+### Overloading the output translation function
+
+* **devstossim/model/RadioMedium.h**
+    
+    The radio model overload the output function to apply the Friis equation. In this sense, it shows how to generate an external transition message (*ExternalMessage*) from an output message (*outputMessage*). Additionally, this model uses the *addCouplingForAllModels* method to automatically generate couplings for the component models.
+
+### Model of sensor node
+
+* **devstossim/model/Mote.h**
+    
+    The Mote model is the basic model of sensor node. This model can be used as a basis to generate sensor nodes having other components (other type of transceiver, different sensors, incorporating a battery model, etc.).

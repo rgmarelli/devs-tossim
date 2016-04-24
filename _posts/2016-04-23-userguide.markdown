@@ -3,6 +3,13 @@ layout: post
 title:  "User guide"
 date:   2016-04-23 04:00:00 -0300
 ---
+
+* [Installation and directory structure](#installation-and-directory-structure)
+* [Compiling TinyOS Applications With DEVS-TOSSIM](#compiling-tinyos-applications-with-devs-tossim)
+* [Compiling the simulation server](#compiling-the-simulation-server)
+* [The user interface of DEVS-TOSSIM](#the-user-interface-of-devs-tossim)
+* [Running a simulation with DEVS-TOSSIM](#running-a-simulation-with-devs-tossim)
+
 ## Installation and directory structure
 
 The simulation framework DEVS-TOSSIM was developed and tested with TinyOS 2.1.2 and Linux. The DEVS user interface requires the _readline_ library and its development files (headers).
