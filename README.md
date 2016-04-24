@@ -7,3 +7,5 @@ The simulator removes some limitations of the simulator "*TOSSIM*" of TinyOS, su
 Additionally, the simulator provides a simple user interface to control the simulation. This interface allows the user to control time during the simulation, for example: execute the simulation in real-time or as fast as possible.
 
 Finally, it should be noted, that the DEVS framework is a generic DEVS implementation in C++ that can be used to simulate systems not related to wireless sensor networks.
+
+More information: [http://rgmarelli.github.io/devs-tossim/](http://rgmarelli.github.io/devs-tossim/)
