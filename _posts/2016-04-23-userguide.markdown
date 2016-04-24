@@ -111,5 +111,27 @@ the following arguments:
 
 * __data sensor port (optional)__: activate a DataSensor that will expect information in the port specified.
 
+For example, to add the following two nodes to the simulation:
+
+> * A root node, with:
+>   * id = 0
+>   * duty-cycle = 50% (0.5)
+>   * position = [0,0,0]
+>   * serial forwarder enabled in port 9002
+>   * sensor oscillating around 5000
+
+> * A node called node1 with:
+>   * id = 1
+>   * duty-cycle = 50% (0.5)
+>   * position = [0,0,50]
+>   * serial forwarder disabled
+>   * sensor oscillating around 7000
+
+You must execute:
+
+    cd /opt/tinyos-2.1.2/apps/RadioCountToLeds/simbuild
+    ./mote localhost:5001 root 0 0.5 0,0,0 9002 5000 &
+    ./mote localhost:5001 node1 1 0.5 0,0,50 0 7000 &
+
 Additionally, a bash script called "nodes.sh" (src/devstossim/client_mote) can be used to generate a grid of nodes.
 

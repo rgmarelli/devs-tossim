@@ -12,12 +12,12 @@
       {{ content }}
       <h3>***</h3>
       <ul>
+        {% if page.next.url %}
+        <li>next: <a class="next" href="{{page.next.url | prepend: site.baseurl}}">{{page.next.title}}</a></li>
+        {% endif %}
         {% if page.previous.url %}
         <li>previous: <a class="prev" href="{{page.previous.url | prepend: site.baseurl}}">{{page.previous.title}}</a></li>
         {% endif %}
-        {% if page.next.url %}
-        <li>next: <a class="next" href="{{page.next.url | prepend: site.baseurl}}">{{page.next.title}}</a></li>
-      {% endif %}
       </ul>
       <hr />
       <ul>
