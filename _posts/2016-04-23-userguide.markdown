@@ -16,7 +16,7 @@ The simulation framework DEVS-TOSSIM was developed and tested with TinyOS 2.1.2 
 
 The installation of the framework consists in the copy of the source code to a user's directory. No additional steps are required.
 
-The framework is composed of two main directories: devscpp y devstossim.
+The framework is composed of two main directories: *devscpp* and *devstossim*.
 
 The implementation of DEVS can be found on the directory: _devscpp_. This implementation is generic and can be used independently of the models of WSN motes (see: [devscpp](https://github.com/rgmarelli/devscpp)).
 
