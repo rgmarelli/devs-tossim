@@ -46,7 +46,7 @@ DEVS-TOSSIM implements a TinyOS platform called "*devs*". To compile an applicat
     cd /opt/tinyos-2.1.2/apps/RadioCountToLeds/
     make devs
 
-If compilation was successful a directory "*simbuild*" with a program "*client_mote*" has 
+If compilation was successful a directory "*simbuild*" with a program "*mote*" has 
 been generated and the following message is shown:
 
     *** Successfully built DEVS-TOSSIM (DEVS TinyOS Simulator).
@@ -98,7 +98,7 @@ To run a simulation with DEVS-TOSSIM, the server program must be executed as fol
     cd /opt/devs/devstossim/server
     ./server 5001
 
-Then, the TinyOS application (that was compiled with the devs platform) must be executed.
+Then, the TinyOS application (that was compiled for the devs platform) must be executed.
 Every instance of this program represents an independent sensor node. The program receives
 the following arguments:
 

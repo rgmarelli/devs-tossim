@@ -10,4 +10,4 @@ The radio model uses the [Friis transmission equation](https://en.wikipedia.org/
 
 Communications interference is simulated for each transceiver depending on their specific state. The reception of a radio message will be successful if no other message is detected by the transceiver.
 
-It's important to point out that radio communication, reception and transmission of message, is not instanteneous but depends on bandwidth and message's length.
+It's important to point out that radio communication, reception and transmission of messages, is not instanteneous but depends on bandwidth and message's length.
