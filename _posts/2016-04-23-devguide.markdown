@@ -12,7 +12,7 @@ date:   2016-04-23 20:00:00 -0300
 
 ## Introduction
 
-This guide explains how to use the DEVS framework and generate new DEVS models. The DEVS framework is generic and can be used to create simulations that have no relation with wireless sensor networks.
+This guide explains how to use the DEVS framework and generate new DEVS models. The DEVS framework ([devsCPP](https://github.com/rgmarelli/devscpp)) is generic and can be used to create simulations that have no relation with wireless sensor networks.
 
 ## Creating new DEVS atomic models
 
