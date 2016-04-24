@@ -84,6 +84,10 @@ a {
     .page-header {
       padding: 1rem 1rem; } }
 
+.page-header .a {
+    color: #fff
+}
+
 .project-name {
   margin-top: 0;
   margin-bottom: 0.1rem; }
@@ -295,8 +299,9 @@ a {
 }
 
 hr.sep {
-   text-align:center; margin: 0 auto;
-   width: 25%;
+   text-align:center; 
+   margin: 1.0rem 0.0rem 2.0rem 0.0rem;
+   width: 100%;
    border-top: 5px double #eff0f1;
    border-bottom: none;
    background-color: transparent;
