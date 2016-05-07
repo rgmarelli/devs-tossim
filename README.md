@@ -1,6 +1,7 @@
 # devsCPP
 
-__devsCPP__ is a DEVS C++ library for the Discrete Event System Specification.
+__devsCPP__ is a C++ library for the Discrete Event System Specification (DEVS).
+
 The framework features:
 * Functionality for distributing the simulation across multiple processes or computers.
 * Support to add or remove remote models at runtime.
