@@ -23,13 +23,23 @@
 #include "Model.h"
 #include "Log.h"
 #include <map>
+#include <vector>
+#include <algorithm>
 
 namespace DEVS {
 
 class CoupledModel : public Model
 {
 public:
-    typedef std::list<Port> PortList;
+    
+    class PortList : public std::vector<Port>
+    {
+    public:
+        template<class UnaryPredicate> void remove_if( UnaryPredicate p ) {
+            std::remove_if(this->begin(), this->end(), p);
+        }
+    };
+
     typedef std::list<std::string> ModelList;
 
 public:

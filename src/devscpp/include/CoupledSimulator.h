@@ -21,6 +21,7 @@
 #include "EventQueue.h"
 #include "Simulator.h"
 #include "CoupledModel.h"
+#include "Shuffle.h"
 #include <iostream>
 
 namespace DEVS {
@@ -100,8 +101,9 @@ public:
            with one or more ports of the component models. */
         CoupledModel::PortList portList = model_->couplings(message->dstPort());
         if(portList.size() > 0) {
-            CoupledModel::PortList::iterator it = portList.begin();
-            while(it != portList.end()) {
+            Shuffle<CoupledModel::PortList> shuffledPorts( portList );
+            Shuffle<CoupledModel::PortList>::iterator it = shuffledPorts.begin();
+            while(it != shuffledPorts.end()) {
 
                 Simulator* simulator = getSimulatorByInputPort(*it);
                 ExternalMessage* myMessage = new ExternalMessage(*it);
@@ -192,8 +194,9 @@ private:
         CoupledModel::PortList portList = model_->couplings(message->srcPort());
         Log::write(LOG_DEBUG,"DEVS","[%s] processOutputMessage = %s", model_name().c_str(), message->srcPort().name().c_str());
         if(portList.size() > 0) {
-            CoupledModel::PortList::iterator it = portList.begin();
-            while(it != portList.end()) {
+            Shuffle<CoupledModel::PortList> shuffledPorts( portList );
+            Shuffle<CoupledModel::PortList>::iterator it = shuffledPorts.begin();
+            while(it != shuffledPorts.end()) {
                  if(model_->outputPorts().hasPort(*it)) {
                      /* The port is connected to an output port. */
                      myOutputMessage = new OutputMessage(model_->outputPorts().getPort(*it));
