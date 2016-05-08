@@ -134,21 +134,17 @@ public:
                 if( nexttn == DEVS::Time::infinity() ) {
                 }
                 else {
-                    DEVS::Time t(0);
-                    if( this->compensate_time_ ) {                       
-                        t = (nexttn - tn);
+                    DEVS::Time t = nexttn - tn;
+                    if( this->compensate_time_ && (t > 0) ) {
                         if( diff > t ) {
                             t=0;
                             Log::write(LOG_WARNING,"DEVS::Simulation","Missing deadline");
                         }
                         else {
-                            t = (t - diff)*time_;
+                            t = t - diff;
                         }
                     }
-                    else {
-                        t = (nexttn - tn)*time_;
-                    }
-                    DEVS::Time::sleep_interval( t );
+                    DEVS::Time::sleep_interval( t*time_ );
                 }
             }
             if( !loop_ ) {
