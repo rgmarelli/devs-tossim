@@ -18,8 +18,8 @@
 #ifndef DEVS_CPP_LOG__
 #define DEVS_CPP_LOG__
 
-#include <Logger.h>
-#include <Syslog.h>
+#include "Logger.h"
+#include "Syslog.h"
 
 namespace DEVS {
 
