@@ -32,9 +32,10 @@ public:
    Simulation( DEVS::CoupledSimulator *simulator) : simulator_(simulator),
                                        loop_(false),
                                        step_(0),
-                                       time_(1),
                                        iterations_(0),
-                                       total_exec_time_(0)
+                                       total_exec_time_(0),
+                                       time_(1),
+                                       compensate_time_(true)
    {}
 
    virtual Command_Result exec( std::string command ) {
@@ -125,14 +126,28 @@ public:
 
             DEVS::Time t = DEVS::Time::now();
             simulator_->simulate();
-            total_exec_time_ = total_exec_time_ + (DEVS::Time::now() - t);
+            DEVS::Time diff = DEVS::Time::now() - t;
+            total_exec_time_ = total_exec_time_ + diff;
             DEVS::Time nexttn = simulator_->nextTN();
             iterations_++;
             if( time_ ) {
                 if( nexttn == DEVS::Time::infinity() ) {
                 }
                 else {
-                    DEVS::Time t = (nexttn - tn)*time_;
+                    DEVS::Time t(0);
+                    if( this->compensate_time_ ) {                       
+                        t = (nexttn - tn);
+                        if( diff > t ) {
+                            t=0;
+                            Log::write(LOG_WARNING,"DEVS::Simulation","Missing deadline");
+                        }
+                        else {
+                            t = (t - diff)*time_;
+                        }
+                    }
+                    else {
+                        t = (nexttn - tn)*time_;
+                    }
                     DEVS::Time::sleep_interval( t );
                 }
             }
@@ -180,6 +195,7 @@ protected:
     unsigned int iterations_;
     DEVS::Time total_exec_time_;
     float time_;
+    bool compensate_time_;
 };
 
 } //namespace UI

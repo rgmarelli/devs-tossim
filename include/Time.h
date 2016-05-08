@@ -23,6 +23,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <math.h>
+#include <stdlib.h>
 
 namespace DEVS {
 
@@ -52,6 +53,11 @@ public:
         if( (this->sec() == t.sec()) && (this->nsec() > t.nsec() ) ) return true; 
         return false;
     }
+
+    bool operator < ( const Time& t ) const {
+        if( t > *this ) return true;
+        return false;
+    }
     
     bool operator == ( const Time& t ) const {
         return this->sec() == t.sec() &&
@@ -65,6 +71,11 @@ public:
     }
 
     Time operator * ( const float x ) const {
+
+        if( x < 0 ) {
+            // bad
+            exit(1);
+        }
 
         float iptr=0; 
         float d = modff(x, &iptr);
@@ -80,11 +91,15 @@ public:
     }
 
     Time operator - ( const Time& t ) const {
+        if( t > *this ) {
+            //This is bad, it has no sense to handle negative times
+            exit(1);
+        }
+
         if( this->nsec() >= t.nsec() ) {
 		    Time r( this->nsec() - t.nsec() );
 		    r.time_.tv_sec += (this->sec() - t.sec());
-            return r;
-        
+            return r;        
 	    }
 	    Time r( (this->nsec() - t.nsec()) + to_nano_sec );        
         r.time_.tv_sec += (this->sec() - t.sec() - 1);
