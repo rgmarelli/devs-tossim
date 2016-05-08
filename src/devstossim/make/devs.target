@@ -8,7 +8,7 @@ $(call TOSMake_include_platform,devs)
 
 GCC=gcc
 GPP=g++
-OPTFLAGS = -g -O0
+OPTFLAGS = -g -O2
 LIBS = -lm -lstdc++ 
 PFLAGS += -fnesc-nido-tosnodes=1000 -fnesc-simulate -fnesc-nido-motenumber=sim_node\(\)  
 WFLAGS = -Wno-nesc-data-race

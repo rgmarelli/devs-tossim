@@ -4,7 +4,7 @@
 #
 
 all:
-	g++ -O0 -g2 -I../../devscpp/include -I../  main.cpp -lpthread -lreadline -lrt -o server
+	g++ -O2 -g -I../../devscpp/include -I../  main.cpp -lpthread -lreadline -lrt -o server
 
 clean:
 	@rm -f server
